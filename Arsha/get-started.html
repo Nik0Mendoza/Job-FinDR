@@ -20,6 +20,7 @@
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link href="assets/css/style.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/894d660221.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -28,22 +29,26 @@
       <h1 class="logo me-auto"><a href="index.html">Job FinDR</a></h1>
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link" href="index.html">Home</a></li>
+          <li><a class="nav-link" href="index.html">Home <i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+          </li>
         </ul> <i class="bi bi-list mobile-nav-toggle"></i>
       </nav>
     </div>
   </header>
-  <section id="hero" class="d-flex align-items-center" style="height: 92vh;">
-    <div class="upload-container" style="margin-top:50px;">
-            <label for="fileInput" class="upload-btn">Choose File</label>
-            <input type="file" id="fileInput" accept=".doc, .docx, .pdf, image/*" onchange="displayFileName()">
-            <p class="file-name" id="fileName">No file chosen</p>
+  <section id="hero" class="flex-column align-items-center" style="height: 92vh;">
+    <div class="upload-title" style="margin-top: 30px;">
+      <h1>Upload Resume</h1>
     </div>
+    <div class="upload-container" style="margin-top: 40px;"> <label for="fileInput" class="upload-btn">Choose
+        File</label> <input type="file" id="fileInput" accept=".doc, .docx, .pdf, image/*" onchange="displayFileName()">
+      <p class="file-name" id="fileName">No file chosen</p>
+    </div>
+    <div class="centered-button-container"> <button class="submit-btn">Submit</button> </div>
   </section>
   </main>
   <footer id="footer2">
     <div class="container footer-bottom clearfix">
-      <div class="copyright"> &copy; Copyright <strong><span>JobFinDR</span></strong>. All Rights Reserved 2023 </div>
+      <div class="copyright"> &copy;<strong><span> JobFinDR</span></strong>. All Rights Reserved 2023 </div>
     </div>
   </footer>
   <div id="preloader"></div><a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
