@@ -65,22 +65,24 @@
     <script src="assets/js/main.js"></script>
 
     <script>
+        hrefs = [
+            'web-dev.html',
+            'junior_data.html',
+            'app-dev.html',
+            'social_media.html'
+        ]
+
+        function getRandom(max) {
+            return Math.floor(Math.random() * (max + 1))
+        }
+
         function checkPDF() {
             var pdfInput = document.getElementById('fileInput');
             var pdfFile = pdfInput.files[0];
     
             if (pdfFile) {
-                if (pdfFile.name === 'Mendoza,Dominic-Resume.pdf') {
-                    window.location.href = 'web-dev.html';
-                } else if (pdfFile.name === 'cv-belle2.pdf') {
-                    window.location.href = 'junior_data.html';
-                } else if (pdfFile.name === 'Louise-CV.pdf') {
-                    window.location.href = 'app-dev.html';
-                } else if (pdfFile.name === 'Padilla_CV.pdf') {
-                    window.location.href = 'social_media.html';
-                } else {
-                    alert('Invalid PDF file name. Please try again.');
-                }
+                random_index = getRandom(hrefs.length)
+                window.location.href = hrefs[random_index]
             } else {
                 alert('Please select a PDF file.');
             }
