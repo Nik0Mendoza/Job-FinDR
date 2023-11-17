@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Job FinDR | Get Started</title>
+    <title>Job FinDR | Job Listings</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     <link href="assets/img/logo.png" rel="icon">
@@ -24,7 +24,7 @@
 </head>
 
 <body>
-    <header id="header" class="fixed-top">
+    <header id="header">
         <div class="container d-flex align-items-center">
             <h1 class="logo me-auto"><a href="index.html">Job FinDR</a></h1>
             <nav id="navbar" class="navbar">
@@ -32,60 +32,41 @@
                     <li><a class="nav-link" href="index.html">Home <i class="fa-solid fa-house"
                                 style="color: #ffffff;"></i></a>
                     </li>
-                </ul> <i class="bi bi-list mobile-nav-toggle"></i>
-            </nav>
+                </ul>
         </div>
     </header>
     <main>
-        <section id="hero" class="flex-column align-items-center" style="height: 92vh;">
-            <div class="upload-title" style="margin-top: 30px;">
-                <h1>Upload Resume</h1>
+        <section class="about">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Best Role</h2>
+                </div>
             </div>
-            <div class="upload-container" style="margin-top: 40px;">
-                <label for="fileInput" class="upload-btn">
-                    <i class="fa-solid fa-file"></i> Choose File
-                </label>
-                <input type="file" id="fileInput" accept=".pdf, image/*" onchange="displayFileName()">
-                <p class="file-name" id="fileName">No file chosen</p>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h3>Application Developer</h3>
+                        <div class="centered-button-container" style="margin-top:290px;">
+                            <button class="upload-new-btn" onclick="location.href='get-started.html'">Upload New</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                    </div>
+                </div>
             </div>
-            <div class="centered-button-container" style="margin-top: 40px;">
-                <button class="submit-btn" onclick="checkPDF()">Submit</button>
-            </div>
-        </section>        
+        </section>
     </main>
     <footer id="footer2">
         <div class="container footer-bottom clearfix">
             <div class="copyright"> &copy;<strong><span> JobFinDR</span></strong>. All Rights Reserved 2023 </div>
         </div>
     </footer>
-    <div id="preloader"></div><a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>
     <script src="assets/vendor/aos/aos.js"></script>
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/main.js"></script>
-
-    <script>
-        function checkPDF() {
-            var pdfInput = document.getElementById('fileInput');
-            var pdfFile = pdfInput.files[0];
-    
-            if (pdfFile) {
-                if (pdfFile.name === 'Mendoza,Dominic-Resume.pdf') {
-                    window.location.href = 'web-dev.html';
-                } else if (pdfFile.name === 'cv-belle2.pdf') {
-                    window.location.href = 'junior_data.html';
-                } else if (pdfFile.name === 'Louise-CV.pdf') {
-                    window.location.href = 'app-dev.html';
-                } else if (pdfFile.name === 'Padilla_CV.pdf') {
-                    window.location.href = 'social_media.html';
-                } else {
-                    alert('Invalid PDF file name. Please try again.');
-                }
-            } else {
-                alert('Please select a PDF file.');
-            }
-        }
-    </script>    
+    <script src="assets/js/main.js"></script>  
 </body>
 
 </html>

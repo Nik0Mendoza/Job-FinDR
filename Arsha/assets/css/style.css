@@ -5,7 +5,8 @@ a:hover {
 
 body {
   font-family: "Open Sans", sans-serif;
-  color: #444
+  color: #444;
+  min-height: 100vh;
 }
 
 a {
@@ -102,10 +103,9 @@ h6 {
 #header {
   transition: .5s;
   z-index: 997;
-  padding: 15px 0
+  padding: 15px 0;
+  background: #37517e;
 }
-
-#header.header-inner-pages,
 #header.header-scrolled {
   background: rgba(40, 58, 90, .9)
 }
@@ -1001,6 +1001,17 @@ section {
   cursor: pointer
 }
 
+.upload-new-btn {
+  margin-top: -8px;
+  padding: 13px 60px;
+  background-color: #47b2e4;
+  color: #fff;
+  font-weight: bolder;
+  border: #37517e;
+  border-radius: 30px;
+  cursor: pointer
+}
+
 .submit-btn:hover {
   color: #fff
 }
@@ -1170,7 +1181,8 @@ section {
 
 #footer .copyright,
 #footer2 .copyright2 {
-  float: left
+  float: left;
+  position: fixed;
 }
 
 #footer2 {
