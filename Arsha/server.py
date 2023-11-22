@@ -10,6 +10,10 @@ def home():
 @app.route("/get-started.html")
 def get_started():
     return render_template("get-started.html")
+
+@app.route("/get-started-forms.html")
+def get_started_forms():
+    return render_template("get-started-forms.html")
   
 if __name__ == "__main__":
   app.run(debug=True)
