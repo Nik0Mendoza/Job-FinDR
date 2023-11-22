@@ -1,4 +1,5 @@
 from datetime import datetime
+from degree_labels import DEGREE_LABELS
 import string
 
 __CURRENT_STRING_CONSTANTS = [ "current", "present", "now", "cur" ]
@@ -60,7 +61,7 @@ def __force_parse_int(value: str) -> int:
     return value
 
 
-def prepare_age(ageString: str) -> int | str:
+def prepare_age(age_string: str) -> int | str:
     """
     Expects a string with which the applicant's age will be inferred.
 
@@ -71,7 +72,7 @@ def prepare_age(ageString: str) -> int | str:
     # remove special characters from both ends
     # handy, since this also removes a dash (minus, hyphen) character, so as to
     # prevent negative numbers from being output
-    age = ageString.strip(string.punctuation)
+    age = age_string.strip(string.punctuation)
     
     try:
         age = int(age)
@@ -99,7 +100,7 @@ def prepare_training(count: int) -> bool:
     return count > 0
 
 
-def prepare_experience_years(years_array: list[str]) -> int | str:
+def prepare_experience_years(years_array: list[str]) -> int:
     """
     Expects a list of string values acquired by LayoutLM.
 
@@ -179,3 +180,37 @@ def prepare_experience_years(years_array: list[str]) -> int | str:
                 summary_years = value
     
     return max(experience_years, summary_years)
+
+
+def prepare_degree(degree_str: str) -> str | None:
+    """
+    Expects a string that contains information regarding the applicant's finished course.
+
+    This should return a value within the scope of the DEGREE_LABELS constant dict.
+    """
+    words = degree_str.strip(string.punctuation + string.digits).lower().split()
+    word_count = len(words)
+
+    for index in range(word_count):
+        current_word = words[index]
+
+        for label, options in DEGREE_LABELS.items():
+            name_tokens = options["name"]
+            abbreviations = options["abbr"]
+
+            # check if there's a match in the created LABELS constant
+            if len(name_tokens) <= word_count - index:
+                is_match = True
+                for j in range(len(name_tokens)):
+                    if name_tokens[j] != words[index + j]:
+                        is_match = False
+                        break
+                
+                if is_match:
+                    return label
+            
+            # check if current word is in abbreviated form, in which case the
+            # label should be returned as well.
+            for j in range(len(abbreviations)): 
+                if current_word == abbreviations[j]:
+                    return label

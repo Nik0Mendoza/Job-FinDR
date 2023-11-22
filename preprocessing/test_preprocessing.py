@@ -1,5 +1,5 @@
 import unittest
-from preprocessing import preprocessing as pre
+import preprocessing as pre
 
 class TestAgePreprocessing(unittest.TestCase):
     def test_age(self):
@@ -97,6 +97,25 @@ class TestExperienceYearsPreprocessing(unittest.TestCase):
         assert result == 0
         result = pre.prepare_experience_years(["no"])
         assert result == 0
+
+
+class TestDegreePreprocessing(unittest.TestCase):
+    def test_degree(self):
+        result = pre.prepare_degree("Bachelor in Computer Science")
+        assert result == "computer science"
+        result = pre.prepare_degree("00== 1 history")
+        assert result == "history"
+        result = pre.prepare_degree("history")
+        assert result == "history"
+        result = pre.prepare_degree("polsci")
+        assert result == "political science"
+        result = pre.prepare_degree("bspa")
+        assert result == "public administration"
+        result = pre.prepare_degree("hrm")
+        assert result == "hotel and restaurant management"
+        result = pre.prepare_degree("")
+        assert result == None
+
 
 if __name__ == '__main__':
     unittest.main()
