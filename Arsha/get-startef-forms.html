@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Job FinDR | Get Started</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="assets/img/logo.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/894d660221.js" crossorigin="anonymous"></script>
+    <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+</head>
+
+<body>
+    <header id="header">
+        <div class="container d-flex align-items-center">
+            <h1 class="logo me-auto"><a href="index.html">Job FinDR</a></h1>
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link" href="index.html">Home <i class="fa-solid fa-house"
+                                style="color: #ffffff;"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section class="about">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Enter Details</h2>
+                </div>
+            </div>
+        </section>
+        <section class="container-form" style="margin-top:-80px; margin-bottom:40px;">
+            <form action="#" method="post" class="form2">
+                <div class="column">
+                    <div class="input-box">
+                        <label>Gender</label>
+                        <select name="gender">
+                            <option value="" disabled selected>Select one</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label>Birthdate</label>
+                        <input type="date" name="birthdate" placeholder="dd/mm/yy">
+                    </div>
+                </div>
+                <div class="input-box">
+                    <label>Degree</label>
+                    <select name="degree">
+                        <option value="" disabled selected>Select one</option>
+                        <option value="highschool">High School</option>
+                        <option value="vocational">Vocational</option>
+                        <option value="bachelor">Bachelor</option>
+                        <option value="master">Masters</option>
+                        <option value="doctor">Doctorate</option>
+                    </select>
+                </div>
+                <div class="input-box">
+                    <label for="program">Program</label>
+                    <input type="text" name="program" placeholder="Enter program">
+                </div>
+                <div class="input-box">
+                    <label for="certificate">Certifications</label>
+                    <input type="text" name="certifications" placeholder="License or any certifications">
+                </div>
+                <div class="header-label">
+                    <label>Skills</label>
+                </div>
+                <div class="column" id="skills-section">
+                    <div class="input-box">
+                        <label for="hskills-description">Hard Skills</label>
+                        <textarea id="hskills-description" name="hard_skills" placeholder="Enter hard skills"></textarea>
+                    </div>
+                    <div class="input-box">
+                        <label for="sskills-description">Soft Skills</label>
+                        <textarea id="sskills-description" name="soft_skills" placeholder="Enter soft skills"></textarea>
+                    </div>
+                </div>
+                <div class="header-label">
+                    <label>Experience</label>
+                </div>
+                <div id="experience-section">
+                    <div class="column">
+                        <div class="input-box">
+                            <label for="experience-role">Experience Role</label>
+                            <input type="text" name="experience_role" placeholder="Enter experience role">
+                        </div>
+                        <div class="input-box">
+                            <label for="experience-years">Experience years</label>
+                            <input type="text" name="experience_years" placeholder="Enter experience years">
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <label for="experience-description">Description</label>
+                        <textarea id="experience-description" name="experience_description" placeholder="Enter description"></textarea>
+                    </div>
+                </div>
+                <button id="addExperience" style="display:block;">+</button>
+            </form>
+            <div class="centered-button-container" style="margin-top: 40px;">
+                <button class="submit-btn">Submit</button>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer2">
+        <div class="container footer-bottom clearfix">
+            <div class="copyright"> &copy;<strong><span> JobFinDR</span></strong>. All Rights Reserved 2023 </div>
+        </div>
+    </footer>
+    <div id="preloader"></div><a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        document.getElementById('addExperience').addEventListener('click', function (event) {
+            // Prevent the default behavior of the button click
+            event.preventDefault();
+    
+            // Clone the existing experience section
+            var clone = document.getElementById('experience-section').cloneNode(true);
+    
+            // Clear input values in the cloned section
+            var inputs = clone.querySelectorAll('input, textarea');
+            inputs.forEach(function (input) {
+                input.value = '';
+            });
+    
+            // Append the cloned section to the container
+            document.getElementById('experience-section').parentNode.insertBefore(clone, document.getElementById('addExperience'));
+        });
+    </script>     
+    
+</body>
+
+</html>
