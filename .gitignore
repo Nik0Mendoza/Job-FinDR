@@ -1,2 +1,10 @@
+__pycache__
 .vscode
+venv
 .DS_Store
+
+*.json
+/*.py
+
+embeddings1.txt
+embeddings2.txt
