@@ -8,3 +8,5 @@ venv
 
 embeddings1.txt
 embeddings2.txt
+
+elmo/
