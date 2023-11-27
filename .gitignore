@@ -5,6 +5,7 @@ venv
 
 *.json
 /*.py
+!install-elmo.py
 
 embeddings1.txt
 embeddings2.txt
