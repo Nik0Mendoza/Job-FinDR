@@ -33,4 +33,4 @@ predicted_values = list(predictions)  # Convert R vector to Python list
 
 # 'predicted_values' now holds the predictions made by the R-trained model using new_data in Python
 
-print(predictions)
+print(predicted_values)

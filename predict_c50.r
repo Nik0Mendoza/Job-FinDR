@@ -5,11 +5,5 @@ library(C50)
 custom_predict_function <- function(model, new_data) {
     # Perform predictions
     predictions <- predict(model, new_data)
-    return(predictions)
+    return(toString(predictions))
 }
-
-# Call the function to make predictions
-predictions <- custom_predict_function(model = loaded_model, new_data = new_data)
-
-# Return predictions
-predictions

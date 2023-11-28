@@ -139,9 +139,9 @@
   <script src="static/assets/js/main.js"></script>
 
   <script>
-  var experience_role = [];
-  var experience_years = [];
-  var experience_description = [];
+    var experience_role = [];
+    var experience_years = [];
+    var experience_description = [];
     document
       .getElementById("addExperience")
       .addEventListener("click", function (event) {
@@ -172,10 +172,23 @@
     document.querySelector(".form2").addEventListener("submit", function (event) {
       event.preventDefault();
 
+      // Get birthdate from the form input
+      const birthdate = document.querySelector('input[name="birthdate"]').value;
+
+      // Calculate age
+      const today = new Date();
+      const birthDate = new Date(birthdate);
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+
       // Get form data
       const formData = {
         sex: document.querySelector('select[name="sex"]').value,
-        birthdate: document.querySelector('input[name="birthdate"]').value,
+        age: age.toString(),
         degree: document.querySelector('select[name="degree"]').value,
         program: document.querySelector('input[name="program"]').value,
         certifications: document.querySelector('input[name="certifications"]').value,
@@ -188,7 +201,7 @@
       };
 
       //alert(document.querySelector('select[name="sex"]').value);
-      
+
       // Convert formData object to JSON string
       const formDataJSON = JSON.stringify(formData);
 
@@ -206,7 +219,7 @@
         .then((response) => {
           // Handle the response from the server if needed
           console.log(response);
-          
+
           // Check if the response is successful (status code 200-299)
           if (response.ok) {
             // Redirect to results.html

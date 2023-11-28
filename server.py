@@ -1,9 +1,8 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for
-import pandas as pd
-import rpy2.robjects as robjects
-import preprocessing as pre;
+from flask import Flask, render_template, request, redirect, url_for
 import os
-import test_elmo
+import subprocess
+import preprocessing as pre
+
 
 app = Flask(__name__)
 
@@ -26,8 +25,8 @@ def get_started_forms():
     
 @app.route("/submit", methods=['POST'])
 def submit():
-    birthdate = request.json['birthdate']
-    degree = request.json['degree']
+    age = request.json['age']
+    degree = request.json['program']
     certifications = request.json['certifications']
     training = request.json['training']
     hard_skills = request.json['hard_skills']
@@ -40,7 +39,7 @@ def submit():
     
     # Placeholder for sending data to R (Replace this with your actual R logic)
     r_data = {
-        'birthdate': [birthdate],
+        'age': [age],
         'degree': [degree],
         'certifications': [certifications],
         'training': [training],
@@ -53,8 +52,11 @@ def submit():
     # You can send this data to your R model for predictions here
     
     print(r_data)
-    test_elmo.receive_dictionary(r_data)
-    return redirect(url_for('results'))
+    pre.prepare_features(r_data)
+
+    predictions = subprocess.check_output(["python", "trained_c50.py"]).decode('utf-8')
+
+    return render_template('results.html', predictions=predictions)
 
 @app.route('/results.html')
 def results():
