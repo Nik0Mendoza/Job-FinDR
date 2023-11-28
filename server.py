@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 import os
 import subprocess
+import pandas as pd
 import preprocessing as pre
 
 
@@ -23,6 +24,7 @@ def get_started():
 def get_started_forms():
     return render_template("get-started-forms.html")
     
+
 @app.route("/submit", methods=['POST'])
 def submit():
     age = request.json['age']
@@ -55,12 +57,11 @@ def submit():
     pre.prepare_features(r_data)
 
     predictions = subprocess.check_output(["python", "trained_c50.py"]).decode('utf-8')
+    print("hello")
+    print(predictions)
 
     return render_template('results.html', predictions=predictions)
 
-@app.route('/results.html')
-def results():
-    return render_template('results.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
