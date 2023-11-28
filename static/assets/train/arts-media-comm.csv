@@ -1,0 +1,41 @@
+age,experience,experience_role,experience_years,hard_skills,soft_skills,certifications,degree,training,job_position
+29,0.8,0.7,5,0.6,0.9,FALSE,Visual Communications,FALSE,Graphic Designer
+36,0.8,0.8,13,0.9,0.6,FALSE,Psychology and Fine Arts,FALSE,Graphic Designer
+30,0.5,0.5,10,0.1,0.8,FALSE,Fashion Design,FALSE,Graphic Designer
+27,0.7,0.7,12,0.9,0.9,FALSE,Graphic Design,FALSE,Graphic Designer
+35,0.7,0.7,10,0.9,0.9,FALSE,Graphic Design,FALSE,Graphic Designer
+39,0.7,0.7,11,0.9,0.7,FALSE,Graphic Design,FALSE,Graphic Designer
+32,0.6,0.6,8,1,0.9,FALSE,Graphic Design,FALSE,Graphic Designer
+28,0.7,0.7,7,0.9,1,FALSE,Graphic Design,FALSE,Graphic Designer
+28,0.7,0.7,15,0.9,0.9,FALSE,Graphic Design,FALSE,Graphic Designer
+28,0.8,0.8,5,0.9,0.9,FALSE,Graphic and Web Design,FALSE,Graphic Designer
+32,0.6,0.6,1,0.9,0.9,FALSE,Communication,FALSE,Public Relations
+30,0.7,0.7,3,0.9,0.9,FALSE,Public Relations,FALSE,Public Relations
+23,0.5,0.4,2,0.9,0.9,FALSE,Public Relations,FALSE,Public Relations
+22,0.7,0.7,5,0.9,0.9,FALSE,Public Relations,FALSE,Public Relations
+28,0.7,0.7,4,0.9,0.9,FALSE,Communication,FALSE,Public Relations
+35,0.6,0.6,6,0.9,0.9,FALSE,Public Relations,FALSE,Public Relations
+30,0.7,0.7,9,0.9,0.9,FALSE,Public Relations,FALSE,Public Relations
+32,0.5,0.5,3,0.9,0.9,FALSE,Public Relations,FALSE,Public Relations
+26,0.7,0.7,4,0.9,0.9,FALSE,Journalism,FALSE,Public Relations
+29,0.7,0.7,2,0.9,0.9,FALSE,Public Relations,FALSE,Public Relations
+24,0.7,0.7,9,0.9,0.9,FALSE,Psychology,FALSE,Public Relations
+25,0.7,0.7,4,0.9,0.9,FALSE,Mass Communications,FALSE,Event Planner
+27,0.8,0.8,6,0.9,0.9,FALSE,Computer Science,FALSE,Event Planner
+32,0.6,0.6,1,0.9,0.9,FALSE,Hospitality Management,FALSE,Event Planner
+28,0.4,0.4,6,1,0.9,FALSE,Event Management,FALSE,Event Planner
+32,0.8,0.8,6,0.9,0.9,FALSE,Business Administration,FALSE,Event Planner
+25,0.7,0.7,4,1,0.9,FALSE,Hospitality Management,FALSE,Event Planner
+30,0.8,0.8,3,1,1,FALSE,Event Management,FALSE,Event Planner
+35,0.6,0.6,3,0.9,0.9,FALSE,Business Administration,FALSE,Event Planner
+28,0.7,0.7,5,1,0.9,FALSE,Marketing Management,FALSE,Event Planner
+28,0.6,0.6,5,1,0.9,FALSE,Illustration,FALSE,Illustrator
+25,0.7,0.7,3,0.9,0.7,FALSE,Visual Communication,FALSE,Illustrator
+30,0.7,0.7,6,0.8,0.9,FALSE,Interior Design,FALSE,Illustrator
+32,0.7,0.7,4,1,0.9,FALSE,Graphic Design,FALSE,Illustrator
+32,0.7,0.7,7,1,0.9,FALSE,Graphic Design,FALSE,Illustrator
+22,0.7,0.7,2,0.85,0.9,FALSE,Multimedia Arts,FALSE,Illustrator
+35,0.7,0.7,8,0.9,0.9,FALSE,Digital Arts,FALSE,Illustrator
+27,0.6,0.6,3,0.9,0.7,FALSE,Communication Arts,FALSE,Illustrator
+29,0.7,0.7,5,1,0.9,FALSE,Illustration,FALSE,Illustrator
+24,0.7,0.7,2,0.9,0.9,FALSE,Graphic Design,FALSE,Illustrator

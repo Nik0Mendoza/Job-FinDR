@@ -6,6 +6,9 @@ venv
 *.json
 /*.py
 !install-elmo.py
+!elmo-features.py
+!trained_c50.py
+!server.py
 
 embeddings1.txt
 embeddings2.txt

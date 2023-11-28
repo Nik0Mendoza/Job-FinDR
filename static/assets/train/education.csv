@@ -1,0 +1,31 @@
+age,experience,experience_role,experience_years,hard_skills,soft_skills,certifications,degree,training,job_position
+24,0.7,0.6,2,0.8,0.9,TRUE,Psychology,TRUE,SPED Teacher
+26,0.6,0.6,3,0.9,0.8,TRUE,Psychology,TRUE,SPED Teacher
+24,0.5,0.5,2,0.9,0.9,TRUE,Psychology,TRUE,SPED Teacher
+27,0.8,0.8,3,0.9,0.9,TRUE,Psychology,TRUE,SPED Teacher
+23,0.8,0.8,2,0.9,0.9,TRUE,Psychology,TRUE,SPED Teacher
+24,0.6,0.6,4,1,0.9,TRUE,Psychology,TRUE,SPED Teacher
+26,0.7,0.7,1,0.9,0.9,TRUE,Psychology,TRUE,SPED Teacher
+28,0.6,0.6,4,0.9,0.9,TRUE,Psychology,TRUE,SPED Teacher
+30,0.5,0.5,1,0.9,0.9,TRUE,Psychology,TRUE,SPED Teacher
+29,0.9,0.9,5,1,0.9,TRUE,Psychology,TRUE,SPED Teacher
+27,0.7,0.7,2,1,0.9,FALSE,Biology,FALSE,Researcher
+29,0.8,0.8,3,0.9,1,FALSE,Economics,FALSE,Researcher
+23,0.6,0.6,1,0.9,0.9,FALSE,Computer Science,FALSE,Researcher
+31,0.8,0.8,6,1,0.9,FALSE,Nursing,FALSE,Researcher
+28,0.7,0.7,3,0.9,0.9,FALSE,Sociology,FALSE,Researcher
+31,0.7,0.7,6,0.9,0.9,FALSE,Business Administration,FALSE,Researcher
+25,0.7,0.7,2,0.9,0.9,FALSE,Environmental Science,FALSE,Researcher
+32,0.7,0.7,4,0.9,0.9,FALSE,Political Science,FALSE,Researcher
+28,0.9,0.8,2,0.9,0.9,FALSE,Biomedical Sciences,FALSE,Researcher
+35,0.6,0.6,6,0.9,0.9,FALSE,Pharmacy,FALSE,Researcher
+35,0.9,0.9,6,0.9,0.8,TRUE,Computer Science,TRUE,College Professor
+40,0.8,0.8,18,0.9,0.9,TRUE,History,TRUE,College Professor
+32,0.8,0.8,9,0.9,0.9,TRUE,Environmental Science,TRUE,College Professor
+38,0.8,0.8,10,0.9,0.9,TRUE,Business Administration,TRUE,College Professor
+36,0.8,0.8,9,0.9,0.9,TRUE,Chemistry,TRUE,College Professor
+42,0.8,0.8,21,0.9,0.9,TRUE,Psychology,TRUE,College Professor
+34,0.8,0.8,6,0.5,0.9,TRUE,Mechanical Engineering,TRUE,College Professor
+39,0.8,0.8,17,0.9,0.9,TRUE,English Literature,TRUE,College Professor
+33,0.8,0.8,5,0.9,0.9,TRUE,Civil Engineering,TRUE,College Professor
+37,0.8,0.8,10,0.9,0.9,TRUE,Political Science,TRUE,College Professor
