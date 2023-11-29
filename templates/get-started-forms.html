@@ -216,14 +216,17 @@
         },
         body: JSON.stringify(formData),
       })
-        .then((response) => {
-          // Handle the response from the server if needed
-          console.log(response);
+        .then(async (response) => {
 
-          // Check if the response is successful (status code 200-299)
+          const prediction = await response.text();
+
+          // Handle the response from the server if needed
+          // console.log(await response.text());
+
+          // Check if the response is successful (status code 200-299)  
           if (response.ok) {
             // Redirect to results.html
-            window.location.href = "./results.html";
+            window.location.href = "./results/" + prediction
           } else {
             // Handle other response statuses
             console.log("Server returned an error");

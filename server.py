@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import os
 import subprocess
 import pandas as pd
 import preprocessing as pre
+import string
 
 
 app = Flask(__name__)
@@ -59,9 +60,16 @@ def submit():
     predictions = subprocess.check_output(["python", "trained_c50.py"]).decode('utf-8')
     print("hello")
     print(predictions)
+    
+    while "'" in predictions:
+        predictions = predictions.strip(string.punctuation + string.whitespace)
 
-    return render_template('results.html', predictions=predictions)
+    return predictions
 
+@app.route('/results/<prediction>')
+def result(prediction):
+    # Use the processed data 'prediction' to render a template
+    return render_template('results.html', prediction=prediction)
 
 if __name__ == "__main__":
     app.run(debug=True)
