@@ -94,6 +94,37 @@ form .input-container textarea {
     background-color: #dddddd;
 }
 
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #33333366;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+}
+
+#overlay .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.25rem;
+    border-color: #47b2e4;
+    border-right-color: transparent;
+}
+
+.hide-overlay {
+    display: none;
+}
+
+.show-overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 @media screen and (max-width: 500px) {
     form .column {
         flex-wrap: wrap;

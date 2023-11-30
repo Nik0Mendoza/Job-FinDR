@@ -23,7 +23,6 @@ function addExperience() {
 
 function getAllInputs(containerId, isArea = false) {
     const inputs = document.querySelectorAll('#' + containerId + (isArea ? ' textarea' : ' input'))
-    console.log(inputs)
     return Array.from(inputs).map(input => input.value)
 }
 
@@ -62,6 +61,8 @@ document
     .addEventListener('click', async (e) => {
         e.preventDefault()
 
+        overlay = document.getElementById('overlay')
+
         // Get birthdate from the form input
         const birthdate = document.querySelector('input[name="birthdate"]').value
 
@@ -86,16 +87,19 @@ document
             experience_description: getAllInputs('experience-container', true),
         }
 
+        overlay.classList.remove('hide-overlay')
+        overlay.classList.add('show-overlay')
+
         const response = await fetch("./submit", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
         })
 
-        // if (response.status == 200 || response.status == 201) {
-        //     // Navigate to results page
-        //     window.location.href = "./results"
-        // } else {
-        //     alert("There was an error on our end. Please try again later.")
-        // }
+        if (response.status == 200 || response.status == 201) {
+            // Navigate to results page
+            window.location.href = "./results"
+        } else {
+            alert("There was an error on our end. Please try again later.")
+        }
     })
