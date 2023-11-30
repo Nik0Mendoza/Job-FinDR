@@ -10,6 +10,17 @@ function addTextInput(containerId, placeholder) {
     container.append(input)
 }
 
+function addExperience() {
+    const container = document.getElementById('experience-container')
+    const input = document.createElement('input')
+    const textarea = document.createElement('textarea')
+    input.type = 'text'
+    input.placeholder = 'Enter previous role'
+    textarea.placeholder = 'Describe your past experience'
+    container.append(input)
+    container.append(textarea)
+}
+
 document.getElementById('add-certification')
     .addEventListener('click', (e) => {
         e.preventDefault()
@@ -20,6 +31,24 @@ document.getElementById('add-training')
     .addEventListener('click', (e) => {
         e.preventDefault()
         addTextInput('training-container', "Training")
+    })
+
+document.getElementById('add-hard-skill')
+    .addEventListener('click', (e) => {
+        e.preventDefault()
+        addTextInput('hard-skills-container', "Enter hard skill")
+    })
+
+document.getElementById('add-soft-skill')
+    .addEventListener('click', (e) => {
+        e.preventDefault()
+        addTextInput('soft-skills-container', "Enter soft skill")
+    })
+
+document.getElementById('add-experience')
+    .addEventListener('click', (e) => {
+        e.preventDefault()
+        addExperience()
     })
 
 document
@@ -90,5 +119,4 @@ document
         } else {
             alert("There was an error on our end. Please try again later.")
         }
-
     })

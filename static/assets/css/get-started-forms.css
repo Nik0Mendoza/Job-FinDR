@@ -51,16 +51,15 @@ form .column {
 
 form .input-container textarea {
     width: 100%;
-    padding: 10px;
+    padding: 0.8rem;
     box-sizing: border-box;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: 0.4rem;
     font-size: 1rem;
+    margin-top: 0.15rem;
     color: #707070;
-    margin-top: 8px;
     outline: none;
     resize: vertical;
-    /* Allow vertical resizing */
 }
 
 .form-section-label {

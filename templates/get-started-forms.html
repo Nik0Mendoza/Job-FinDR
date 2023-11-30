@@ -42,6 +42,7 @@
       <h2>Enter Details</h2>
     </div>
     <form method="POST">
+
       <div class="column">
         <div class="input-container">
           <label for="sex">Sex</label>
@@ -56,10 +57,12 @@
           <input type="date" name="birthdate" placeholder="dd/mm/yy" />
         </div>
       </div>
+
       <div class="input-container">
         <label for="program">Program</label>
         <input type="text" name="program" placeholder="Enter program" />
       </div>
+
       <div class="input-container">
         <label>Certifications</label>
         <div id="certifications-container" class="d-flex flex-column gap-2">
@@ -69,6 +72,7 @@
           Add another +
         </button>
       </div>
+
       <div class="input-container">
         <label>Training</label>
         <div id="training-container" class="d-flex flex-column gap-2">
@@ -78,44 +82,49 @@
           Add another +
         </button>
       </div>
+
       <div class="form-section-label">
         <label>Skills</label>
       </div>
       <div class="column" id="skills-section">
         <div class="input-container">
           <label>Hard Skills</label>
-          <div id="hard-skills-container">
+          <div id="hard-skills-container" class="d-flex flex-column gap-2">
             <input placeholder="Enter hard skill" />
           </div>
+          <button id="add-hard-skill" class="add-button">
+            Add another +
+          </button>
         </div>
         <div class="input-container">
           <label>Soft Skills</label>
-          <div id="soft-skills-container">
+          <div id="soft-skills-container" class="d-flex flex-column gap-2">
             <input placeholder="Enter soft skill" />
           </div>
+          <button id="add-soft-skill" class="add-button">
+            Add another +
+          </button>
         </div>
       </div>
-      <!-- <div class="form-section-label">
-          <label>Experience</label>
-        </div> -->
-      <!-- <div id="experience-section">
-          <div class="input-container">
-            <label for="experience-years">Experience years</label>
-            <input type="text" name="experience_years" placeholder="Enter experience years" />
-          </div>
-          <div id="experience-container">
-            <div class="input-container">
-              <label>Experience Role</label>
-              <input type="text" name="experience_role" placeholder="Enter experience role" />
-            </div>
-            <div class="input-container">
-              <label for="experience-description">Description</label>
-              <textarea id="experience-description" name="experience_description"
-                placeholder="Enter description"></textarea>
-            </div>
-          </div>
-        </div> -->
-      <!-- <button id="addExperience" style="display: block">+</button> -->
+
+      <div class="form-section-label">
+        <label>Experience</label>
+      </div>
+      <div class="input-container">
+        <label for="experience-years">Years of experience</label>
+        <input type="text" name="experience_years" placeholder="Enter years of experience in total" />
+      </div>
+      <div class="input-container">
+        <label>Past role</label>
+        <div id="experience-container">
+          <input type="text" placeholder="Enter previous role" />
+          <textarea placeholder="Describe your past experience"></textarea>
+        </div>
+        <button id="add-experience" class="add-button">
+          Add another +
+        </button>
+      </div>
+      
       <div class="centered-button-container" style="margin-top: 40px">
         <input class="submit-btn" type="submit" value="Submit" id="submit"></input>
       </div>
