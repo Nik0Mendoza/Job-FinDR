@@ -18,6 +18,7 @@
   <link href="static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
   <link href="static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
   <link href="static/assets/css/style.css" rel="stylesheet" />
+  <link href="static/assets/css/get-started-forms.css" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/894d660221.js" crossorigin="anonymous"></script>
   <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all" />
   <link href="vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all" />
@@ -37,91 +38,98 @@
     </div>
   </header>
   <main>
-    <section class="about">
-      <div class="container">
-        <div class="section-title">
-          <h2>Enter Details</h2>
-        </div>
-      </div>
-    </section>
-    <section class="container-form" style="margin-top: -80px; margin-bottom: 40px">
-      <form method="POST" class="form2">
-        <div class="column">
-          <div class="input-box">
-            <label>Sex</label>
-            <select name="sex">
-              <option value="" disabled selected>Select one</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </div>
-          <div class="input-box">
-            <label>Birthdate</label>
-            <input type="date" name="birthdate" placeholder="dd/mm/yy" />
-          </div>
-        </div>
-        <div class="input-box">
-          <label>Degree</label>
-          <select name="degree">
+    <div class="section-title">
+      <h2>Enter Details</h2>
+    </div>
+    <form>
+      <div class="column">
+        <div class="input-container">
+          <label for="sex">Sex</label>
+          <select name="sex">
             <option value="" disabled selected>Select one</option>
-            <option value="highschool">High School</option>
-            <option value="vocational">Vocational</option>
-            <option value="bachelor">Bachelor</option>
-            <option value="master">Masters</option>
-            <option value="doctor">Doctorate</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
           </select>
         </div>
-        <div class="input-box">
-          <label for="program">Program</label>
-          <input type="text" name="program" placeholder="Enter program" />
+        <div class="input-container">
+          <label for="birthdate">Birthdate</label>
+          <input type="date" name="birthdate" placeholder="dd/mm/yy" />
         </div>
-        <div class="input-box">
-          <label for="certificate">Certifications</label>
-          <input type="text" name="certifications" placeholder="License or any certifications" />
+      </div>
+
+      <div class="input-container">
+        <label for="program">Program</label>
+        <input type="text" name="program" placeholder="Enter program" />
+      </div>
+
+      <div class="input-container">
+        <label>Certifications</label>
+        <div id="certifications-container" class="d-flex flex-column gap-2">
+          <input type="text" placeholder="License or any certifications" />
         </div>
-        <div class="input-box">
-          <label for="training">Training</label>
-          <input type="text" name="training" placeholder="Training" />
+        <button id="add-certification" class="add-button">
+          Add another +
+        </button>
+      </div>
+
+      <div class="input-container">
+        <label>Training</label>
+        <div id="training-container" class="d-flex flex-column gap-2">
+          <input type="text" placeholder="Training" />
         </div>
-        <div class="header-label">
-          <label>Skills</label>
-        </div>
-        <div class="column" id="skills-section">
-          <div class="input-box">
-            <label for="hskills-description">Hard Skills</label>
-            <textarea id="hskills-description" name="hard_skills" placeholder="Enter hard skills"></textarea>
+        <button id="add-training" class="add-button">
+          Add another +
+        </button>
+      </div>
+
+      <div class="form-section-label">
+        <label>Skills</label>
+      </div>
+      <div class="column" id="skills-section">
+        <div class="input-container">
+          <label>Hard Skills</label>
+          <div id="hard-skills-container" class="d-flex flex-column gap-2">
+            <input placeholder="Enter hard skill" />
           </div>
-          <div class="input-box">
-            <label for="sskills-description">Soft Skills</label>
-            <textarea id="sskills-description" name="soft_skills" placeholder="Enter soft skills"></textarea>
+          <button id="add-hard-skill" class="add-button">
+            Add another +
+          </button>
+        </div>
+        <div class="input-container">
+          <label>Soft Skills</label>
+          <div id="soft-skills-container" class="d-flex flex-column gap-2">
+            <input placeholder="Enter soft skill" />
           </div>
+          <button id="add-soft-skill" class="add-button">
+            Add another +
+          </button>
         </div>
-        <div class="header-label">
-          <label>Experience</label>
+      </div>
+
+      <div class="form-section-label">
+        <label>Experience</label>
+      </div>
+      <div class="input-container">
+        <label for="experience-years">Years of experience</label>
+        <input type="text" name="experience_years" placeholder="Enter years of experience in total" />
+      </div>
+      <div class="input-container">
+        <label>Past role</label>
+        <div id="experience-container">
+          <input type="text" placeholder="Enter previous role" />
+          <textarea placeholder="Describe your past experience"></textarea>
         </div>
-        <div id="experience-section">
-          <div class="column">
-            <div class="input-box">
-              <label for="experience-role">Experience Role</label>
-              <input type="text" name="experience_role" placeholder="Enter experience role" />
-            </div>
-            <div class="input-box">
-              <label for="experience-years">Experience years</label>
-              <input type="text" name="experience_years" placeholder="Enter experience years" />
-            </div>
-          </div>
-          <div class="input-box">
-            <label for="experience-description">Description</label>
-            <textarea id="experience-description" name="experience_description"
-              placeholder="Enter description"></textarea>
-          </div>
-        </div>
-        <button id="addExperience" style="display: block">+</button>
-        <div class="centered-button-container" style="margin-top: 40px">
-          <input class="submit-btn" type="submit" value="Submit" id="submit"></input>
-        </div>
-      </form>
-    </section>
+        <button id="add-experience" class="add-button">
+          Add another +
+        </button>
+      </div>
+      
+      <div class="centered-button-container" style="margin-top: 40px">
+        <button class="submit-btn" id="submit-btn">
+          Submit
+        </button>
+      </div>
+    </form>
   </main>
 
   <footer id="footer2">
@@ -131,7 +139,6 @@
       </div>
     </div>
   </footer>
-  <div id="preloader"></div>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
   <script src="static/assets/vendor/aos/aos.js"></script>
