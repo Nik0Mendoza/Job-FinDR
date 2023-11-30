@@ -1,0 +1,57 @@
+.job-post {
+    border-radius: 16px;
+    padding: 1.75em 1.5em;
+    margin-bottom: 1.75em;
+    opacity: 0;
+    transform: translateY(8%);
+    transition: opacity 0.2s ease, transform 0.5s ease;
+    background-color: rgba(241, 241, 241, 0.55);
+    box-shadow: 6px 9px 12px -2px rgba(136,132,132,0.74);
+    -webkit-box-shadow: 6px 9px 12px -2px rgba(136,132,132,0.74);
+    -moz-box-shadow: 6px 9px 12px -2px rgba(136,132,132,0.74);
+}
+
+.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.job-post h2 {
+    margin-bottom: 0.8em;
+}
+
+.job-post p {
+    margin-top: 1.25em;
+    margin-bottom: 0;
+    text-align: justify;
+}
+
+#main-container {
+    padding: 60px 0;
+    position: relative;
+}
+
+#prediction-container {
+    top: 10em;
+    position: sticky;
+}
+
+#progress-spinner .spinner-border {
+    border-color: #47b2e4;
+    border-right-color: transparent
+}
+
+#progress-spinner p {
+    color: #37517e;
+}
+
+#upload-new-btn {
+    margin-top: -8px;
+    padding: 13px 60px;
+    background-color: #47b2e4;
+    color: #fff;
+    font-weight: bolder;
+    border: #37517e;
+    border-radius: 30px;
+    cursor: pointer
+  }

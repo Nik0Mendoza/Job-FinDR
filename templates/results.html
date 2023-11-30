@@ -20,14 +20,15 @@
     <link href="../static/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="../static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
     <link href="../static/assets/css/style.css" rel="stylesheet">
+    <link href="../static/assets/css/results.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/894d660221.js" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body class="d-flex flex-column">
     <header id="header">
         <div class="container d-flex align-items-center">
-            <h1 class="logo me-auto"><a href="./index.html">Job FinDR</a></h1>
-            <nav id="navbar" class="navbar">    
+            <h1 class="logo me-auto"><a href="index.html">Job FinDR</a></h1>
+            <nav id="navbar" class="navbar">
                 <ul>
                     <li><a class="nav-link" href="./index.html">Home <i class="fa-solid fa-house"
                                 style="color: #ffffff;"></i></a>
@@ -35,24 +36,28 @@
                 </ul>
         </div>
     </header>
-    <main>
-        <section class="about">
-            <div class="container">
-                <div class="section-title">
-                    <h2>JOB ROLE</h2>
+    <main id="main-container" class="flex-grow-1">
+        <div class="container">
+            <div class="section-title">
+                <h2>JOB ROLE</h2>
+            </div>
+        </div>
+        <div class="container d-flex align-items-start">
+            <div id="prediction-container" class="w-50">
+                <h3>{{ prediction }}</h3>
+                <div class="centered-button-container" style="margin-top:290px;">
+                    <button id="upload-new-btn">
+                        Try Another
+                    </button>
                 </div>
             </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <h3>{{ prediction }}</h3>
-                        <div class="centered-button-container" style="margin-top:290px;">
-                            <button class="upload-new-btn" onclick="location.href='./get-started-forms.html'">Try Another</button>
-                        </div>
-                    </div>
+            <div id="posts-container" class="d-flex flex-column align-items-stretch w-50" style="height: 2000px;">
+                <div id="progress-spinner" class="d-flex flex-column align-items-center mt-5 gap-3">
+                    <p>Generating job posts...</p>
+                    <div class="spinner-border" role="status"></div>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
     <footer id="footer2">
         <div class="container footer-bottom clearfix">
@@ -64,7 +69,8 @@
             class="bi bi-arrow-up-short"></i></a>
     <script src="../static/assets/vendor/aos/aos.js"></script>
     <script src="../static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../static/assets/js/main.js"></script>  
+    <script src="../static/assets/js/main.js"></script>
+    <script src="../static/assets/js/results.js"></script>
 </body>
 
 </html>

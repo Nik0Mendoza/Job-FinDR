@@ -45,7 +45,7 @@
       </div>
     </section>
     <section class="container-form" style="margin-top: -80px; margin-bottom: 40px">
-      <form action="/submit" method="POST" class="form2">
+      <form method="POST" class="form2">
         <div class="column">
           <div class="input-box">
             <label>Sex</label>
@@ -137,107 +137,7 @@
   <script src="static/assets/vendor/aos/aos.js"></script>
   <script src="static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="static/assets/js/main.js"></script>
-
-  <script>
-    var experience_role = [];
-    var experience_years = [];
-    var experience_description = [];
-    document
-      .getElementById("addExperience")
-      .addEventListener("click", function (event) {
-        // Prevent the default behavior of the button click
-        event.preventDefault();
-
-        // Clone the existing experience section
-        var clone = document
-          .getElementById("experience-section")
-          .cloneNode(true);
-
-        // Clear input values in the cloned section
-        var inputs = clone.querySelectorAll("input, textarea");
-        inputs.forEach(function (input) {
-          input.value = "";
-        });
-
-        // Append the cloned section to the container
-        document
-          .getElementById("experience-section")
-          .parentNode.insertBefore(
-            clone,
-            document.getElementById("addExperience")
-          );
-      });
-  </script>
-  <script>
-    document.querySelector(".form2").addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      // Get birthdate from the form input
-      const birthdate = document.querySelector('input[name="birthdate"]').value;
-
-      // Calculate age
-      const today = new Date();
-      const birthDate = new Date(birthdate);
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const monthDiff = today.getMonth() - birthDate.getMonth();
-      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-      }
-
-
-      // Get form data
-      const formData = {
-        sex: document.querySelector('select[name="sex"]').value,
-        age: age.toString(),
-        degree: document.querySelector('select[name="degree"]').value,
-        program: document.querySelector('input[name="program"]').value,
-        certifications: document.querySelector('input[name="certifications"]').value,
-        training: document.querySelector('input[name="training"]').value,
-        hard_skills: document.querySelector('textarea[name="hard_skills"]').value,
-        soft_skills: document.querySelector('textarea[name="soft_skills"]').value,
-        experience_role: document.querySelector('input[name="experience_role"]').value,
-        experience_years: document.querySelector('input[name="experience_years"]').value,
-        experience_description: document.querySelector('textarea[name="experience_description"]').value,
-      };
-
-      //alert(document.querySelector('select[name="sex"]').value);
-
-      // Convert formData object to JSON string
-      //const formDataJSON = JSON.stringify(formData);
-
-      // Display formData in an alert dialog box
-      //alert(formDataJSON);
-
-      // Send the form data as JSON to the Flask server
-      fetch("./submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      })
-        .then(async (response) => {
-
-          const prediction = await response.text();
-
-          // Handle the response from the server if needed
-          // console.log(await response.text());
-
-          // Check if the response is successful (status code 200-299)  
-          if (response.ok) {
-            // Redirect to results.html
-            window.location.href = "./results/" + prediction
-          } else {
-            // Handle other response statuses
-            console.log("Server returned an error");
-          }
-        })
-        .catch((error) => {
-          // Handle any errors that occurred during the fetch
-          console.error("Error:", error);
-        });
-    });
-  </script>
+  <script src="static/assets/js/get-started-forms.js"></script>
 </body>
 
 </html>
