@@ -1,14 +1,21 @@
+from api import *
 from flask import Flask, render_template, request, redirect, url_for
 
+import json
 import os
 import pandas as pd
 import preprocessing as pre
-import requests
 import string
 import subprocess
 import time
 
 app = Flask(__name__)
+
+# Store features so that it could be used site-wide
+features = {}
+
+# Store prediction in a variable so it could be used site-wide
+prediction = ""
 
 # Check if R_HOME is set, if not, set it
 if not os.environ.get('R_HOME'):
@@ -27,25 +34,35 @@ def get_started():
 def get_started_forms():
     return render_template("get-started-forms.html")
 
-@app.route('/results/<prediction>')
-def result(prediction):
-    # Use the processed data 'prediction' to render a template
-    return render_template('results.html', prediction=prediction)
+@app.route('/results')
+def result():
+    return render_template('results.html')
+
+@app.route('/job-posts/<job>')
+def get_job_posts(job):
+    return get_adzuna_posts(job) + get_serp_posts(job)
     
 @app.route("/submit", methods=['POST'])
 def submit():
-    # age = request.json['age']
-    # degree = request.json['program']
-    # certifications = request.json['certifications']
-    # training = request.json['training']
-    # hard_skills = request.json['hard_skills']
-    # soft_skills = request.json['soft_skills']
-    # experience_role = request.json['experience_role']
-    # experience_years = request.json['experience_years']
-    # experience = request.json['experience_description']
+    global prediction, features
 
-    # Now you can use this data for predictions or any other processing in R
-    
+    features["age"] = request.json['age']
+    features["degree"] = request.json['program']
+    features["certifications"] = request.json['certifications']
+    features["training"] = request.json['training']
+    features["hard_skills"] = request.json['hard_skills']
+    features["soft_skills"] = request.json['soft_skills']
+    features["experience_role"] = request.json['experience_role']
+    features["experience_years"] = request.json['experience_years']
+    features["experience"] = request.json['experience_description']
+
+    prediction = "Computer Engineer"
+
+    return json.dumps({
+        "status": 201,
+        "message": "Submission success!"
+    })
+
     # Placeholder for sending data to R (Replace this with your actual R logic)
     # r_data = {
     #     'age': [age],
@@ -69,10 +86,6 @@ def submit():
     
     # while "'" in prediction:
     #     prediction = prediction.strip(string.punctuation + string.whitespace)
-
-    prediction = "Computer Engineer"
-
-    return prediction
 
 if __name__ == "__main__":
     app.run(debug=True)
