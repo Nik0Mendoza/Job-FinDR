@@ -31,9 +31,11 @@ document
     .getElementById("submit")
     .addEventListener('click', async (e) => {
         e.preventDefault()
-        const result = await fetch("./submit", { method: "GET" })
+        const result = await fetch("./submit", { method: "POST" })
         const resultText = await result.text()
-        console.log(resultText)
+
+        // Navigate to results page
+        window.location.href = "./results/" + resultText 
 
         // event.preventDefault()
 

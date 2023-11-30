@@ -1,11 +1,28 @@
+from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for
+
 import os
-import subprocess
 import pandas as pd
 import preprocessing as pre
+import requests
 import string
+import subprocess
 import time
 
+# get important keys in .env file
+load_dotenv()
+
+# REED API information
+REED_API_KEY = os.getenv("REED_API_KEY")
+# API key to be included in the header as the username, leaving the password blank
+REED_API_URL = "https://www.reed.co.uk/api/1.0/search?keywords="    
+
+SERP_API_KEY = os.getenv("SERP_API_KEY")
+SERP_API_URL = "https://serpapi.com/search.json?engine=google_jobs&hl=en&q="
+
+ADZUNA_APP_ID = os.getenv("ADZUNA_APP_ID")
+ADZUNA_API_KEY = os.getenv("ADZUNA_API_KEY")
+ADZUNA_API_URL = "http://api.adzuna.com/v1/api/jobs/gb/search/1?app_id={ADZUNA_APP_ID}&app_key={ADZUNA_API_KEY}&results_per_page=20&content-type=application/json&what="
 
 app = Flask(__name__)
 
@@ -25,8 +42,13 @@ def get_started():
 @app.route("/get-started-forms.html")
 def get_started_forms():
     return render_template("get-started-forms.html")
+
+@app.route('/results/<prediction>')
+def result(prediction):
+    # Use the processed data 'prediction' to render a template
+    return render_template('results.html', prediction=prediction)
     
-@app.route("/submit", methods=['GET'])
+@app.route("/submit", methods=['POST'])
 def submit():
     # age = request.json['age']
     # degree = request.json['program']
@@ -64,15 +86,9 @@ def submit():
     # while "'" in prediction:
     #     prediction = prediction.strip(string.punctuation + string.whitespace)
 
-    time.sleep(3)
     prediction = "Computer Engineer"
 
     return prediction
-
-@app.route('/results/<prediction>')
-def result(prediction):
-    # Use the processed data 'prediction' to render a template
-    return render_template('results.html', prediction=prediction)
 
 if __name__ == "__main__":
     app.run(debug=True)
