@@ -29,7 +29,7 @@ def get_serp_posts(role_keyword: str) -> list:
     return [
         { 
             "title": result["title"],
-            "company_name": result["company_name"],
+            "company": result["company_name"],
             "location": result["location"],
             "description": result["description"]
         }
@@ -50,7 +50,7 @@ def get_adzuna_posts(role_keyword: str) -> list:
         return [
             { 
                 "title": result["title"],
-                "company_name": result["company"]["display_name"],
+                "company": result["company"]["display_name"],
                 "location": result["location"]["display_name"],
                 "description": result["description"]
             }

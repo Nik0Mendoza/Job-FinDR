@@ -38,9 +38,20 @@ def get_started_forms():
 def result():
     return render_template('results.html')
 
-@app.route('/job-posts/<job>')
-def get_job_posts(job):
-    return get_adzuna_posts(job) + get_serp_posts(job)
+@app.route('/job-posts')
+def get_job_posts():
+    """
+    Retrieve job posts from Adzuna and SerpAPI according to the predicted job role
+    recorded after running the `submit` method.
+
+    Normally, this should not be how a usual RESTful API be documented (and created).
+    But since this is a special case anyway, one should just be mindful instead of 
+    the industry standard.
+
+    The usual behavior should be to GET something from the server with a QUERY; that is,
+    the predicted job role as the keyword.
+    """
+    return get_adzuna_posts(prediction) + get_serp_posts(prediction)
     
 @app.route("/submit", methods=['POST'])
 def submit():

@@ -58,28 +58,31 @@ function checkPostsScroll() {
     })
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
+document.addEventListener('DOMContentLoaded', async () => {
+    const response = await fetch('./job-posts')
+
+    if (response.status == 200 || response.status == 201) {
+        const postsData = await response.json()
+
         // Remove progress indicator
         document.getElementById('progress-spinner').remove()
 
         // Add posts to container
         container = document.getElementById('posts-container')
-        for (let index = 0; index < 5; index++) {
+        for (const postData of postsData) {
             post = createJobPost(
-                ROLES[index],
-                LOCATIONS[index],
-                COMPANIES[index],
-                DESCRIPTIONS[index]
+                postData.title,
+                postData.location,
+                postData.company,
+                postData.description
             )
 
             container.append(post)
-            posts.push(post)            
+            posts.push(post)     
         }
 
         checkPostsScroll()
-    }, 2000)
-
+    }
 })
 
 document.addEventListener('scroll', checkPostsScroll)
