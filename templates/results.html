@@ -20,14 +20,15 @@
     <link href="../static/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="../static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
     <link href="../static/assets/css/style.css" rel="stylesheet">
+    <link href="../static/assets/css/results.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/894d660221.js" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body class="d-flex flex-column">
     <header id="header">
         <div class="container d-flex align-items-center">
             <h1 class="logo me-auto"><a href="index.html">Job FinDR</a></h1>
-            <nav id="navbar" class="navbar">    
+            <nav id="navbar" class="navbar">
                 <ul>
                     <li><a class="nav-link" href="index.html">Home <i class="fa-solid fa-house"
                                 style="color: #ffffff;"></i></a>
@@ -35,7 +36,7 @@
                 </ul>
         </div>
     </header>
-    <main>
+    <main class="flex-grow-1">
         <section class="about">
             <div class="container">
                 <div class="section-title">
@@ -43,13 +44,30 @@
                 </div>
             </div>
             <div class="container">
-                <div class="row">
+                <div class="d-flex align-items-start">
                     <div class="col-lg-6">
                         <h3>{{ prediction }}</h3>
                         <div class="centered-button-container" style="margin-top:290px;">
-                            <button class="upload-new-btn" onclick="location.href='get-started-forms.html'">Try Another</button>
+                            <button class="upload-new-btn" onclick="location.href='get-started-forms.html'">Try
+                                Another</button>
                         </div>
                     </div>
+                    <div class="progress-spinner w-100">
+                        <div class="d-flex flex-column align-items-center w-100 mt-5 gap-3">
+                            <p>Generating job posts...</p>
+                            <div class="spinner-border" role="status"></div>
+                        </div>
+                    </div>
+                    <!-- <div class="job-post">
+                        <h2>Job Position</h2>
+                        <span>Company, </span><span class="fst-italic">Location</span>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna felis, scelerisque a
+                            risus at, gravida dictum mauris. Etiam sed imperdiet lacus. Ut fringilla suscipit nibh eu
+                            condimentum. Curabitur lacus magna, placerat eget malesuada sed, vestibulum et elit. Ut
+                            mattis diam est, ut euismod lacus scelerisque et.
+                        </p>
+                    </div> -->
                 </div>
             </div>
         </section>
@@ -64,7 +82,7 @@
             class="bi bi-arrow-up-short"></i></a>
     <script src="../static/assets/vendor/aos/aos.js"></script>
     <script src="../static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../static/assets/js/main.js"></script>  
+    <script src="../static/assets/js/main.js"></script>
 </body>
 
 </html>
