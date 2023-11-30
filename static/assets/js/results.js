@@ -53,4 +53,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 })
 
+// Try another button behavior
+document
+    .getElementById('upload-new-btn')
+    .addEventListener('click', () => {
+        window.location.href = './get-started-forms.html'
+    })
+
 document.addEventListener('scroll', checkPostsScroll)

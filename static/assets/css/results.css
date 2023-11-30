@@ -44,3 +44,14 @@
 #progress-spinner p {
     color: #37517e;
 }
+
+#upload-new-btn {
+    margin-top: -8px;
+    padding: 13px 60px;
+    background-color: #47b2e4;
+    color: #fff;
+    font-weight: bolder;
+    border: #37517e;
+    border-radius: 30px;
+    cursor: pointer
+  }
