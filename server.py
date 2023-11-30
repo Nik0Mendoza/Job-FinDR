@@ -58,6 +58,7 @@ def submit():
     global prediction, features
 
     features["age"] = request.json['age']
+    features["sex"] = request.json['sex']
     features["degree"] = request.json['program']
     features["certifications"] = request.json['certifications']
     features["training"] = request.json['training']

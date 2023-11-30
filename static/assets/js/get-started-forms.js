@@ -74,14 +74,14 @@ document
 
         // Get form data
         const formData = {
-            sex: document.querySelector('select[name="sex"]').value,
-            age: age.toString(),
-            program: document.querySelector('input[name="program"]').value,
+            age: [age.toString()],
+            sex: [document.querySelector('select[name="sex"]').value],
+            program: [document.querySelector('input[name="program"]').value],
             certifications: getAllInputs('certifications-container'),
             training: getAllInputs('training-container'),
             hard_skills: getAllInputs('hard-skills-container'),
             soft_skills: getAllInputs('soft-skills-container'),
-            experience_years: document.querySelector('input[name="experience_years"]').value,
+            experience_years: [document.querySelector('input[name="experience_years"]').value],
             experience_role: getAllInputs('experience-container'),
             experience_description: getAllInputs('experience-container', true),
         }
@@ -92,10 +92,10 @@ document
             body: JSON.stringify(formData)
         })
 
-        if (response.status == 200 || response.status == 201) {
-            // Navigate to results page
-            window.location.href = "./results"
-        } else {
-            alert("There was an error on our end. Please try again later.")
-        }
+        // if (response.status == 200 || response.status == 201) {
+        //     // Navigate to results page
+        //     window.location.href = "./results"
+        // } else {
+        //     alert("There was an error on our end. Please try again later.")
+        // }
     })
