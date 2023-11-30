@@ -36,7 +36,7 @@ def get_started_forms():
 
 @app.route('/results')
 def result():
-    return render_template('results.html')
+    return render_template('results.html', prediction=prediction)
 
 @app.route('/job-posts')
 def get_job_posts():

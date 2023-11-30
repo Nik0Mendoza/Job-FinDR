@@ -26,6 +26,16 @@
     text-align: justify;
 }
 
+#main-container {
+    padding: 60px 0;
+    position: relative;
+}
+
+#prediction-container {
+    top: 10em;
+    position: sticky;
+}
+
 #progress-spinner .spinner-border {
     border-color: #47b2e4;
     border-right-color: transparent
