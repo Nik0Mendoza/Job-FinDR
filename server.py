@@ -4,6 +4,7 @@ import subprocess
 import pandas as pd
 import preprocessing as pre
 import string
+import time
 
 
 app = Flask(__name__)
@@ -25,46 +26,48 @@ def get_started():
 def get_started_forms():
     return render_template("get-started-forms.html")
     
-
-@app.route("/submit", methods=['POST'])
+@app.route("/submit", methods=['GET'])
 def submit():
-    age = request.json['age']
-    degree = request.json['program']
-    certifications = request.json['certifications']
-    training = request.json['training']
-    hard_skills = request.json['hard_skills']
-    soft_skills = request.json['soft_skills']
-    experience_role = request.json['experience_role']
-    experience_years = request.json['experience_years']
-    experience = request.json['experience_description']
+    # age = request.json['age']
+    # degree = request.json['program']
+    # certifications = request.json['certifications']
+    # training = request.json['training']
+    # hard_skills = request.json['hard_skills']
+    # soft_skills = request.json['soft_skills']
+    # experience_role = request.json['experience_role']
+    # experience_years = request.json['experience_years']
+    # experience = request.json['experience_description']
 
     # Now you can use this data for predictions or any other processing in R
     
     # Placeholder for sending data to R (Replace this with your actual R logic)
-    r_data = {
-        'age': [age],
-        'degree': [degree],
-        'certifications': [certifications],
-        'training': [training],
-        'hard_skills': [hard_skills],
-        'soft_skills': [soft_skills],
-        'experience_role': [experience_role],
-        'experience_years': [experience_years],
-        'experience': [experience]
-    }
+    # r_data = {
+    #     'age': [age],
+    #     'degree': [degree],
+    #     'certifications': [certifications],
+    #     'training': [training],
+    #     'hard_skills': [hard_skills],
+    #     'soft_skills': [soft_skills],
+    #     'experience_role': [experience_role],
+    #     'experience_years': [experience_years],
+    #     'experience': [experience]
+    # }
     # You can send this data to your R model for predictions here
     
-    print(r_data)
-    pre.prepare_features(r_data)
+    # print(r_data)
+    # pre.prepare_features(r_data)
 
-    predictions = subprocess.check_output(["python", "trained_c50.py"]).decode('utf-8')
-    print("hello")
-    print(predictions)
+    # prediction = subprocess.check_output(["python", "trained_c50.py"]).decode('utf-8')
+    # print("hello")
+    # print(prediction)
     
-    while "'" in predictions:
-        predictions = predictions.strip(string.punctuation + string.whitespace)
+    # while "'" in prediction:
+    #     prediction = prediction.strip(string.punctuation + string.whitespace)
 
-    return predictions
+    time.sleep(3)
+    prediction = "Computer Engineer"
+
+    return prediction
 
 @app.route('/results/<prediction>')
 def result(prediction):
