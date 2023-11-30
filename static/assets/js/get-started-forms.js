@@ -1,6 +1,27 @@
 var experience_role = []
 var experience_years = []
 var experience_description = []
+
+function addTextInput(containerId, placeholder) {
+    const container = document.getElementById(containerId)
+    const input = document.createElement('input')
+    input.type = 'text'
+    input.placeholder = placeholder
+    container.append(input)
+}
+
+document.getElementById('add-certification')
+    .addEventListener('click', (e) => {
+        e.preventDefault()
+        addTextInput('certifications-container', "License or any certifications")
+    })
+
+document.getElementById('add-training')
+    .addEventListener('click', (e) => {
+        e.preventDefault()
+        addTextInput('training-container', "Training")
+    })
+
 document
     .getElementById("addExperience")
     .addEventListener("click", function (event) {
