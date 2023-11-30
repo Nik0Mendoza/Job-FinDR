@@ -99,5 +99,13 @@ def submit():
     # while "'" in prediction:
     #     prediction = prediction.strip(string.punctuation + string.whitespace)
 
+@app.route('/results/index.html')
+def result_index():
+    return render_template('./index.html')
+
+@app.route('/results/get-started-forms.html')
+def result_get_started():
+    return render_template('./get-started-forms.html')
+
 if __name__ == "__main__":
     app.run(debug=True)
