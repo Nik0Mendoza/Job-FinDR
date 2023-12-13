@@ -76,7 +76,7 @@ document
         // Get form data
         const formData = {
             age: [age.toString()],
-            sex: [document.querySelector('select[name="sex"]').value],
+            sex: document.querySelector('select[name="sex"]').value,
             program: [document.querySelector('input[name="program"]').value],
             certifications: getAllInputs('certifications-container'),
             training: getAllInputs('training-container'),

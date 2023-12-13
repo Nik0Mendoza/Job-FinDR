@@ -9,6 +9,8 @@ import string
 import subprocess
 import time
 
+import preprocessing as pre
+
 app = Flask(__name__)
 
 # Store features so that it could be used site-wide
@@ -67,8 +69,16 @@ def submit():
     features["experience_role"] = request.json['experience_role']
     features["experience_years"] = request.json['experience_years']
     features["experience"] = request.json['experience_description']
+    
+    pre.prepare_features(features)
 
-    prediction = "Computer Engineer"
+    print(features)
+    prediction = subprocess.check_output(["python", "trained_c50.py"]).decode('utf-8')
+    print("hello")
+    print(prediction)
+
+    while "'" in prediction:
+        prediction = prediction.strip(string.punctuation + string.whitespace)
 
     return json.dumps({
         "status": 201,

@@ -16,3 +16,6 @@ embeddings1.txt
 embeddings2.txt
 
 elmo/
+
+preprocessed_result
+preprocessed_result/result.csv
