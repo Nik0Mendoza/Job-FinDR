@@ -32,8 +32,11 @@
 }
 
 #prediction-container {
-    top: 10em;
+    display: flex;
+    flex-direction: column;
     position: sticky;
+    top: 10rem;
+    gap: 10rem;
 }
 
 #progress-spinner .spinner-border {
@@ -47,11 +50,13 @@
 
 #upload-new-btn {
     margin-top: -8px;
-    padding: 13px 60px;
+    padding: 0.75rem 5rem;
     background-color: #47b2e4;
     color: #fff;
     font-weight: bolder;
     border: #37517e;
-    border-radius: 30px;
-    cursor: pointer
-  }
+    border-radius: 2.5rem;
+    cursor: pointer;
+    width: fit-content;
+    align-self: center;
+}
