@@ -1,4 +1,6 @@
 .job-post {
+    display: flex;
+    flex-direction: column;
     border-radius: 16px;
     padding: 1.75em 1.5em;
     margin-bottom: 1.75em;
@@ -9,6 +11,7 @@
     box-shadow: 6px 9px 12px -2px rgba(136,132,132,0.74);
     -webkit-box-shadow: 6px 9px 12px -2px rgba(136,132,132,0.74);
     -moz-box-shadow: 6px 9px 12px -2px rgba(136,132,132,0.74);
+    height: 19rem;
 }
 
 .show {
@@ -21,9 +24,13 @@
 }
 
 .job-post p {
+    height: 100%;
     margin-top: 1.25em;
     margin-bottom: 0;
     text-align: justify;
+    overflow: hidden;
+    mask-image: linear-gradient(180deg, #000000 85%, transparent);
+    -webkit-mask-image: linear-gradient(180deg, #000000 85%, transparent);
 }
 
 #main-container {

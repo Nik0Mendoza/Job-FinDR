@@ -5,7 +5,7 @@ function createJobPost(role, location, company, description) {
     div.classList.add("job-post")
 
     div.innerHTML = `<h2>${role}</h2>` +
-        `<span>${company}, </span><span class="fst-italic">${location}</span>` +
+        `<div><span>${company}, </span><span class="fst-italic">${location}</span></div>` +
         `<p>${description}</p>`
 
     return div
