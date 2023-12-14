@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from serpapi import GoogleSearch
 
+import json
 import os
 import requests
 
@@ -13,6 +14,27 @@ SERP_API_URL = "https://serpapi.com/search.json"
 ADZUNA_APP_ID = os.getenv("ADZUNA_APP_ID")
 ADZUNA_API_KEY = os.getenv("ADZUNA_API_KEY")
 ADZUNA_API_URL = "http://api.adzuna.com/v1/api/jobs/gb/search/1"
+
+PARSER_API_KEY = os.getenv("PARSER_API_KEY")
+PARSER_API_URL = "https://api.superparser.com/parse"
+
+def get_parsed_data(file):
+    headers = {
+        "x-api-key": PARSER_API_KEY,
+    }
+
+    files = { "file": (file.filename, file.read(), file.mimetype) }
+
+    response = requests.post(PARSER_API_URL, headers=headers, files=files)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(response.json())
+        return json.dumps({
+            "status": 500,
+            "message": "There was an error on our end. Please try again later."
+        })
 
 def get_serp_posts(role_keyword: str) -> list:
     params = {

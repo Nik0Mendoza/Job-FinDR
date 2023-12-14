@@ -3,44 +3,64 @@ var experience_years = []
 var experience_description = []
 
 // Drop behavior
-const dropZone = document.getElementById("drop-zone")
-const dropZoneLabel = document.querySelector("#drop-zone span")
-const dropZoneInput = document.querySelector("#drop-zone input")
-dropZone.addEventListener("drop", (ev) => {
+const dropZone = document.getElementById('drop-zone')
+const dropZoneLabel = document.querySelector('#drop-zone span')
+const dropZoneInput = document.querySelector('#drop-zone input')
+dropZone.addEventListener('drop', async (ev) => {
     // Prevent default behavior (Prevent file from being opened)
     ev.preventDefault();
 
     if (ev.dataTransfer.items) {
         // Use DataTransferItemList interface to access the file(s)
-        [...ev.dataTransfer.items].forEach((item, i) => {
-            // If dropped items aren't files, reject them
-            if (item.kind === "file") {
-                const file = item.getAsFile();
-                dropZoneLabel.innerHTML = "File uploaded: " + file.name
+        const items = [...ev.dataTransfer.items]
+
+        for (const item of items) {
+            // get first file in input and break out
+            if (item.kind === 'file') {
+                const file = item.getAsFile()
+
+                dropZoneLabel.innerHTML = 'Loading...'
+                await getParsedData(file)
+                dropZoneLabel.innerHTML = 'File uploaded: ' + file.name
+
+                break
             }
-        });
+        }
     }
 
-    dropZone.classList.remove("drop-zone-hover-state")
+    dropZone.classList.remove('drop-zone-hover-state')
 })
 
-dropZone.addEventListener("dragleave", () => {
-    dropZone.classList.remove("drop-zone-hover-state")
+dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('drop-zone-hover-state')
 })
 
-dropZone.addEventListener("dragenter", () => {
-    dropZone.classList.add("drop-zone-hover-state")
+dropZone.addEventListener('dragenter', () => {
+    dropZone.classList.add('drop-zone-hover-state')
 })
 
-dropZone.addEventListener("dragover", (ev) => {
+dropZone.addEventListener('dragover', (ev) => {
     // Prevent default behavior (Prevent file from being opened)
     ev.preventDefault()
 })
 
-dropZoneInput.addEventListener("change", () => {
+dropZoneInput.addEventListener('change', async () => {
     file = dropZoneInput.files[0];
-    dropZoneLabel.innerHTML = "File uploaded: " + file.name
+    dropZoneLabel.innerHTML = 'Loading...'
+    await getParsedData(file)
+    dropZoneLabel.innerHTML = 'File uploaded: ' + file.name
 })
+
+async function getParsedData(file) {
+    const blob = new Blob([file], { type: file.type })
+    const formData = new FormData()
+    formData.append('file', blob, file.name)
+    const response = await fetch('./parsed-data', {
+        method: 'POST',
+        body: formData,
+    })
+    console.log(await response.json())
+}
 
 function addTextInput(containerId, placeholder) {
     const container = document.getElementById(containerId)
@@ -69,25 +89,25 @@ function getAllInputs(containerId, isArea = false) {
 document.getElementById('add-certification')
     .addEventListener('click', (e) => {
         e.preventDefault()
-        addTextInput('certifications-container', "License or any certifications")
+        addTextInput('certifications-container', 'License or any certifications')
     })
 
 document.getElementById('add-training')
     .addEventListener('click', (e) => {
         e.preventDefault()
-        addTextInput('training-container', "Training")
+        addTextInput('training-container', 'Training')
     })
 
 document.getElementById('add-hard-skill')
     .addEventListener('click', (e) => {
         e.preventDefault()
-        addTextInput('hard-skills-container', "Enter hard skill")
+        addTextInput('hard-skills-container', 'Enter hard skill')
     })
 
 document.getElementById('add-soft-skill')
     .addEventListener('click', (e) => {
         e.preventDefault()
-        addTextInput('soft-skills-container', "Enter soft skill")
+        addTextInput('soft-skills-container', 'Enter soft skill')
     })
 
 document.getElementById('add-experience')
@@ -96,7 +116,7 @@ document.getElementById('add-experience')
         addExperience()
     })
 
-document.getElementById("submit-btn")
+document.getElementById('submit-btn')
     .addEventListener('click', async (e) => {
         e.preventDefault()
 
@@ -129,16 +149,16 @@ document.getElementById("submit-btn")
         overlay.classList.remove('hide-overlay')
         overlay.classList.add('show-overlay')
 
-        const response = await fetch("./submit", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+        const response = await fetch('./submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)
         })
 
         if (response.status == 200 || response.status == 201) {
             // Navigate to results page
-            window.location.href = "./results"
+            window.location.href = './results'
         } else {
-            alert("There was an error on our end. Please try again later.")
+            alert('There was an error on our end. Please try again later.')
         }
     })

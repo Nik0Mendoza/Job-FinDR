@@ -1,10 +1,11 @@
-from api import *
+import api
 from flask import Flask, render_template, request, redirect, url_for
 
 import json
 import os
 import pandas as pd
 import preprocessing as pre
+import requests
 import string
 import subprocess
 import time
@@ -36,11 +37,11 @@ def get_started():
 def get_started_forms():
     return render_template("get-started-forms.html")
 
-@app.route('/results')
+@app.route("/results")
 def result():
-    return render_template('results.html', prediction=prediction)
+    return render_template("results.html", prediction=prediction)
 
-@app.route('/job-posts')
+@app.route("/job-posts")
 def get_job_posts():
     """
     Retrieve job posts from Adzuna and SerpAPI according to the predicted job role
@@ -53,8 +54,14 @@ def get_job_posts():
     The usual behavior should be to GET something from the server with a QUERY; that is,
     the predicted job role as the keyword.
     """
-    return get_adzuna_posts(prediction) + get_serp_posts(prediction)
-    
+    return api.get_adzuna_posts(prediction) + api.get_serp_posts(prediction)
+
+@app.route("/parsed-data", methods=['POST'])
+def get_parsed_data():
+    """Tap into Resume Parser API and parse the file through the link passed."""
+    uploaded_file = request.files['file']
+    return api.get_parsed_data(uploaded_file)
+
 @app.route("/submit", methods=['POST'])
 def submit():
     global prediction, features
