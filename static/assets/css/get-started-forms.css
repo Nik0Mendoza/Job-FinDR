@@ -29,6 +29,14 @@ form {
     transition: background-color 0.2s ease;
 }
 
+#drop-zone input {
+    opacity: 0;
+}
+
+#drop-zone input:hover {
+    cursor: pointer;
+}
+
 /* For dragging purposes */
 .drop-zone-hover-state {
     background-color: #31a9e1a0 !important;
