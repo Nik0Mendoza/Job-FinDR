@@ -1,4 +1,11 @@
-posts = []
+let commonData = []
+let addedData = []
+
+let posts = []
+
+const container = document.getElementById('posts-container')
+const commonViewLabel = document.getElementById('common-view-label')
+const addedViewLabel = document.getElementById('added-view-label')
 
 function createJobPost(role, location, company, description) {
     const div = document.createElement('div')
@@ -26,36 +33,65 @@ function checkPostsScroll() {
     })
 }
 
+function removePosts() {
+    while (container.firstChild)
+        container.removeChild(container.lastChild)
+    posts = []
+}
+
+function fillPosts(list) {
+    for (let i = 0; i < list.length; i++) {
+        const post = createJobPost(
+            list[i].title,
+            list[i].location,
+            list[i].company,
+            list[i].description
+        )
+        container.append(post)
+        posts.push(post)
+    }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
+    commonViewLabel.classList.toggle('hide')
+    addedViewLabel.classList.toggle('hide')
+
     const response = await fetch('./job-posts')
 
     if (response.status == 200 || response.status == 201) {
         const postsData = await response.json()
+        commonData = postsData.common
+        addedData = postsData.added
 
         // Remove progress indicator
         document.getElementById('progress-spinner').remove()
 
-        // Add posts to container
-        container = document.getElementById('posts-container')
-        for (const postData of postsData) {
-            post = createJobPost(
-                postData.title,
-                postData.location,
-                postData.company,
-                postData.description
-            )
-
-            container.append(post)
-            posts.push(post)     
-        }
-
+        removePosts()
+        fillPosts(addedData)
         checkPostsScroll()
+
+        commonViewLabel.classList.toggle('hide')
     }
 })
 
+commonViewLabel.addEventListener('click', () => {
+    removePosts()
+    fillPosts(commonData)
+    checkPostsScroll()
+    commonViewLabel.classList.toggle('hide')
+    addedViewLabel.classList.toggle('hide')
+})
+
+addedViewLabel.addEventListener('click', () => {
+    removePosts()
+    fillPosts(addedData)
+    checkPostsScroll()
+    commonViewLabel.classList.toggle('hide')
+    addedViewLabel.classList.toggle('hide')
+})
+
 // Try another button behavior
-document
-    .getElementById('upload-new-btn')
+document.getElementById('upload-new-btn')
     .addEventListener('click', () => {
         window.location.href = './get-started-forms.html'
     })

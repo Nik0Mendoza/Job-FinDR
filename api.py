@@ -48,15 +48,17 @@ def get_serp_posts(role_keyword: str) -> list:
     response = search.get_dict()
     jobs_results = response["jobs_results"]
 
-    return [
-        { 
-            "title": result["title"],
-            "company": result["company_name"],
-            "location": result["location"],
-            "description": result["description"]
-        }
-        for result in jobs_results
-    ]
+    if "error" not in response:
+        return [
+            { 
+                "title": result["title"],
+                "company": result["company_name"],
+                "location": result["location"],
+                "description": result["description"]
+            }
+            for result in jobs_results
+        ]
+    return []
     
 def get_adzuna_posts(role_keyword: str) -> list:
     params = {
@@ -78,5 +80,4 @@ def get_adzuna_posts(role_keyword: str) -> list:
             }
             for result in job_results
         ]
-    
     return []

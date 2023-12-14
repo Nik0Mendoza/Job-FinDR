@@ -43,7 +43,27 @@
     flex-direction: column;
     position: sticky;
     top: 10rem;
-    gap: 10rem;
+}
+
+#prediction-container button {
+    margin-top: 6rem;
+}
+
+#common-view-label {
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+#added-view-label {
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+.hide {
+    opacity: 0 !important;
+    pointer-events: none;
 }
 
 #progress-spinner .spinner-border {

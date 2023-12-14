@@ -18,7 +18,8 @@ app = Flask(__name__)
 features = {}
 
 # Store prediction in a variable so it could be used site-wide
-prediction = ""
+common_prediction = ""
+added_prediction = ""
 
 # Check if R_HOME is set, if not, set it
 if not os.environ.get('R_HOME'):
@@ -39,7 +40,7 @@ def get_started_forms():
 
 @app.route("/results")
 def result():
-    return render_template("results.html", prediction=prediction)
+    return render_template("results.html", common=common_prediction, added=added_prediction)
 
 @app.route("/job-posts")
 def get_job_posts():
@@ -54,7 +55,15 @@ def get_job_posts():
     The usual behavior should be to GET something from the server with a QUERY; that is,
     the predicted job role as the keyword.
     """
-    return api.get_adzuna_posts(prediction) + api.get_serp_posts(prediction)
+
+    common_posts = api.get_serp_posts(common_prediction) + api.get_adzuna_posts(common_prediction)
+    added_posts = api.get_serp_posts(added_prediction) + api.get_adzuna_posts(added_prediction)
+
+    return json.dumps({
+        "status": 200,
+        "common": common_posts,
+        "added": added_posts
+    })
 
 @app.route("/parsed-data", methods=['POST'])
 def get_parsed_data():
@@ -64,7 +73,7 @@ def get_parsed_data():
 
 @app.route("/submit", methods=['POST'])
 def submit():
-    global prediction, features
+    global common_prediction, added_prediction, features
 
     features["age"] = request.json['age']
     features["sex"] = request.json['sex']
@@ -84,8 +93,11 @@ def submit():
     # print("hello")
     # print(prediction)
 
-    while "'" in prediction:
-        prediction = prediction.strip(string.punctuation + string.whitespace)
+    common_prediction = "Computer Engineer"
+    added_prediction = "Developer"
+
+    while "'" in common_prediction:
+        common_prediction = common_prediction.strip(string.punctuation + string.whitespace)
 
     return json.dumps({
         "status": 201,
