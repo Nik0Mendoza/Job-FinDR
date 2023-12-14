@@ -52,14 +52,32 @@ dropZoneInput.addEventListener('change', async () => {
 })
 
 async function getParsedData(file) {
+    // const delay = ms => new Promise(res => setTimeout(res, ms));
+
     const blob = new Blob([file], { type: file.type })
     const formData = new FormData()
     formData.append('file', blob, file.name)
-    const response = await fetch('./parsed-data', {
-        method: 'POST',
-        body: formData,
-    })
-    console.log(await response.json())
+
+    configureInput(true)
+    // const response = await fetch('./parsed-data', {
+    //     method: 'POST',
+    //     body: formData,
+    // })
+    // console.log(await response.json())
+    configureInput(false)
+}
+
+function configureInput(disabled) {
+    const inputs = document.querySelectorAll('input')
+    const textareas = document.querySelectorAll('textarea')
+    const buttons = document.querySelectorAll('button')
+
+    for (const input of inputs)
+        input.disabled = disabled
+    for (const textarea of textareas)
+        textarea.disabled = disabled
+    for (const button of buttons)
+        button.disabled = disabled
 }
 
 function addTextInput(containerId, placeholder) {

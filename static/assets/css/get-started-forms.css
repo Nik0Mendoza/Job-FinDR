@@ -153,6 +153,21 @@ form .input-container textarea {
     align-items: center;
 }
 
+#submit {
+    margin-top: -8px;
+    padding: 13px 60px;
+    background-color: #37517e;
+    color: #fff;
+    font-weight: bolder;
+    border: #47b2e4;
+    border-radius: 30px;
+    transition: background-color 0.2s ease;
+}
+
+#submit:hover {
+    background-color: #37517ed5;
+}
+
 @media screen and (max-width: 500px) {
     form .column {
         flex-wrap: wrap;
