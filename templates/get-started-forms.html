@@ -42,6 +42,9 @@
       <h2>Enter Details</h2>
     </div>
     <form>
+      <div id="drop-zone" ondrop="dropHandler(event)">
+        <span>Drop your resume PDF or .DOC/X here</span>
+      </div>
       <div class="column">
         <div class="input-container">
           <label for="sex">Sex</label>
@@ -85,7 +88,7 @@
       <div class="form-section-label">
         <label>Skills</label>
       </div>
-      <div class="column" id="skills-section">
+      <div class="column">
         <div class="input-container">
           <label>Hard Skills</label>
           <div id="hard-skills-container" class="d-flex flex-column gap-2">

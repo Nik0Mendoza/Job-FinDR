@@ -70,12 +70,12 @@ def submit():
     features["experience_years"] = request.json['experience_years']
     features["experience"] = request.json['experience_description']
     
-    pre.prepare_features(features)
+    # pre.prepare_features(features)
 
-    print(features)
-    prediction = subprocess.check_output(["python", "trained_c50.py"]).decode('utf-8')
-    print("hello")
-    print(prediction)
+    # print(features)
+    # prediction = subprocess.check_output(["python", "trained_c50.py"]).decode('utf-8')
+    # print("hello")
+    # print(prediction)
 
     while "'" in prediction:
         prediction = prediction.strip(string.punctuation + string.whitespace)
