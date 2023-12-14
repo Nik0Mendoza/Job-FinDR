@@ -4,9 +4,9 @@ var experience_description = []
 
 // Drop behavior
 const dropZone = document.getElementById("drop-zone")
+const dropZoneLabel = document.querySelector("#drop-zone span")
+const dropZoneInput = document.querySelector("#drop-zone input")
 dropZone.addEventListener("drop", (ev) => {
-    console.log("File(s) dropped");
-
     // Prevent default behavior (Prevent file from being opened)
     ev.preventDefault();
 
@@ -16,7 +16,7 @@ dropZone.addEventListener("drop", (ev) => {
             // If dropped items aren't files, reject them
             if (item.kind === "file") {
                 const file = item.getAsFile();
-                console.log(`… file[${i}].name = ${file.name}`);
+                dropZoneLabel.innerHTML = "File uploaded: " + file.name
             }
         });
     }
@@ -35,6 +35,11 @@ dropZone.addEventListener("dragenter", () => {
 dropZone.addEventListener("dragover", (ev) => {
     // Prevent default behavior (Prevent file from being opened)
     ev.preventDefault()
+})
+
+dropZoneInput.addEventListener("change", () => {
+    file = dropZoneInput.files[0];
+    dropZoneLabel.innerHTML = "File uploaded: " + file.name
 })
 
 function addTextInput(containerId, placeholder) {
