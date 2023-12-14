@@ -2,6 +2,58 @@ var experience_role = []
 var experience_years = []
 var experience_description = []
 
+async function getParsedData(file) {
+    // const delay = ms => new Promise(res => setTimeout(res, ms));
+
+    const blob = new Blob([file], { type: file.type })
+    const formData = new FormData()
+    formData.append('file', blob, file.name)
+
+    const response = await fetch('./parsed-data', {
+        method: 'POST',
+        body: formData,
+    })
+
+    if (response.status == 200 || response.status == 201) {
+        const json = await response.json()
+        json.data.status = 200
+        return json.data
+    } else {
+        return response.json()
+    }
+
+    /*
+    // Use this to test autofill, to prevent parser credits from running out
+    return {
+        status: 200,
+        education: [
+            {
+                course: "Something"
+            }
+        ],
+        employer: [
+            {
+                role: "someone",
+                description: "something"
+            },
+            {
+                role: "someone",
+                description: "something"
+            }
+        ],
+        total_experience: {
+            years: 15,
+        },
+        skills: {
+            overall_skills: [
+                "some skill",
+                "some skill"
+            ]
+        }
+    }
+    */
+}
+
 // Drop behavior
 const dropZone = document.getElementById('drop-zone')
 const dropZoneLabel = document.querySelector('#drop-zone span')
@@ -20,8 +72,18 @@ dropZone.addEventListener('drop', async (ev) => {
                 const file = item.getAsFile()
 
                 dropZoneLabel.innerHTML = 'Loading...'
-                await getParsedData(file)
+                configureInput(true)
+
+                const data = await getParsedData(file)
+
                 dropZoneLabel.innerHTML = 'File uploaded: ' + file.name
+                configureInput(false)
+
+                if (data.status == 200) {
+                    fillData(data)
+                } else {
+                    alert("There was an error parsing the resume inserted. You may have to fill up the fields manually.")
+                }
 
                 break
             }
@@ -29,6 +91,24 @@ dropZone.addEventListener('drop', async (ev) => {
     }
 
     dropZone.classList.remove('drop-zone-hover-state')
+})
+
+dropZoneInput.addEventListener('change', async () => {
+    file = dropZoneInput.files[0];
+
+    dropZoneLabel.innerHTML = 'Loading...'
+    configureInput(true)
+
+    const data = await getParsedData(file)
+
+    dropZoneLabel.innerHTML = 'File uploaded: ' + file.name
+    configureInput(false)
+
+    if (data.status == 200) {
+        fillData(data)
+    } else {
+        alert("There was an error parsing the resume inserted. You may have to fill up the fields manually.")
+    }
 })
 
 dropZone.addEventListener('dragleave', () => {
@@ -44,27 +124,65 @@ dropZone.addEventListener('dragover', (ev) => {
     ev.preventDefault()
 })
 
-dropZoneInput.addEventListener('change', async () => {
-    file = dropZoneInput.files[0];
-    dropZoneLabel.innerHTML = 'Loading...'
-    await getParsedData(file)
-    dropZoneLabel.innerHTML = 'File uploaded: ' + file.name
-})
+function fillData(parsedData) {
+    if (parsedData.education) {
+        for (const item of parsedData.education) {
+            if (item.course) {
+                fillSingle('program', item.course)
+                break
+            }
+        }
+    }
 
-async function getParsedData(file) {
-    // const delay = ms => new Promise(res => setTimeout(res, ms));
+    if (parsedData.skills) {
+        if (parsedData.skills.overall_skills) {
+            const hardSkills = parsedData.skills.overall_skills
+            fillMultiple('hard-skills-container', 'Enter hard skill', hardSkills)
+        }
+    }
 
-    const blob = new Blob([file], { type: file.type })
-    const formData = new FormData()
-    formData.append('file', blob, file.name)
+    if (parsedData.total_experience) {
+        if (parsedData.total_experience.years) {
+            const years = parsedData.total_experience.years
+            fillSingle('experience-years', years)
+        }
+    }
 
-    configureInput(true)
-    // const response = await fetch('./parsed-data', {
-    //     method: 'POST',
-    //     body: formData,
-    // })
-    // console.log(await response.json())
-    configureInput(false)
+    if (parsedData.employer) {
+        fillExperience(parsedData.employer)
+    }
+}
+
+function fillSingle(name, value) {
+    const input = document.querySelector(`input[name=${name}]`)
+    input.value = value
+}
+
+function fillMultiple(containerId, inputPlaceholder, values) {
+    const inputs = document.querySelectorAll(`#${containerId} input`)
+    for (let i = 0; i < values.length; i++) {
+        if (i >= inputs.length) {
+            const addedInput = addTextInput(containerId, inputPlaceholder)
+            addedInput.value = values[i]
+        } else {
+            inputs[i].value = values[i]
+        }
+    }
+}
+
+function fillExperience(experiences) {
+    const inputs = document.querySelectorAll(`#experience-container input`)
+    const textareas = document.querySelectorAll(`#experience-container textarea`)
+    for (let i = 0; i < experiences.length; i++) {
+        if (i >= inputs.length) {
+            const added = addExperience()
+            added.input.value = experiences[i].role
+            added.textarea.value = experiences[i].description
+        } else {
+            inputs[i].value = experiences[i].role
+            textareas[i].value = experiences[i].description
+        }
+    }
 }
 
 function configureInput(disabled) {
@@ -86,6 +204,7 @@ function addTextInput(containerId, placeholder) {
     input.type = 'text'
     input.placeholder = placeholder
     container.append(input)
+    return input
 }
 
 function addExperience() {
@@ -97,6 +216,11 @@ function addExperience() {
     textarea.placeholder = 'Describe your past experience'
     container.append(input)
     container.append(textarea)
+
+    return {
+        input: input,
+        textarea: textarea
+    }
 }
 
 function getAllInputs(containerId, isArea = false) {
@@ -134,11 +258,11 @@ document.getElementById('add-experience')
         addExperience()
     })
 
-document.getElementById('submit-btn')
+document.getElementById('submit')
     .addEventListener('click', async (e) => {
         e.preventDefault()
 
-        overlay = document.getElementById('overlay')
+        const overlay = document.getElementById('overlay')
 
         // Get birthdate from the form input
         const birthdate = document.querySelector('input[name="birthdate"]').value
@@ -146,7 +270,7 @@ document.getElementById('submit-btn')
         // Calculate age
         const today = new Date()
         const birthDate = new Date(birthdate)
-        let age = today.getFullYear() - birthDate.getFullYear()
+        const age = today.getFullYear() - birthDate.getFullYear()
         const monthDiff = today.getMonth() - birthDate.getMonth()
         if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) age--
 
@@ -159,7 +283,7 @@ document.getElementById('submit-btn')
             training: getAllInputs('training-container'),
             hard_skills: getAllInputs('hard-skills-container'),
             soft_skills: getAllInputs('soft-skills-container'),
-            experience_years: [document.querySelector('input[name="experience_years"]').value],
+            experience_years: [document.querySelector('input[name="experience-years"]').value],
             experience_role: getAllInputs('experience-container'),
             experience_description: getAllInputs('experience-container', true),
         }
