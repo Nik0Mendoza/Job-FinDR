@@ -2,32 +2,8 @@ var experience_role = []
 var experience_years = []
 var experience_description = []
 
-function addTextInput(containerId, placeholder) {
-    const container = document.getElementById(containerId)
-    const input = document.createElement('input')
-    input.type = 'text'
-    input.placeholder = placeholder
-    container.append(input)
-}
-
-function addExperience() {
-    const container = document.getElementById('experience-container')
-    const input = document.createElement('input')
-    const textarea = document.createElement('textarea')
-    input.type = 'text'
-    input.placeholder = 'Enter previous role'
-    textarea.placeholder = 'Describe your past experience'
-    container.append(input)
-    container.append(textarea)
-}
-
-function getAllInputs(containerId, isArea = false) {
-    const inputs = document.querySelectorAll('#' + containerId + (isArea ? ' textarea' : ' input'))
-    return Array.from(inputs).map(input => input.value)
-}
-
+// Drop behavior
 const dropZone = document.getElementById("drop-zone")
-
 dropZone.addEventListener("drop", (ev) => {
     console.log("File(s) dropped");
 
@@ -60,6 +36,30 @@ dropZone.addEventListener("dragover", (ev) => {
     // Prevent default behavior (Prevent file from being opened)
     ev.preventDefault()
 })
+
+function addTextInput(containerId, placeholder) {
+    const container = document.getElementById(containerId)
+    const input = document.createElement('input')
+    input.type = 'text'
+    input.placeholder = placeholder
+    container.append(input)
+}
+
+function addExperience() {
+    const container = document.getElementById('experience-container')
+    const input = document.createElement('input')
+    const textarea = document.createElement('textarea')
+    input.type = 'text'
+    input.placeholder = 'Enter previous role'
+    textarea.placeholder = 'Describe your past experience'
+    container.append(input)
+    container.append(textarea)
+}
+
+function getAllInputs(containerId, isArea = false) {
+    const inputs = document.querySelectorAll('#' + containerId + (isArea ? ' textarea' : ' input'))
+    return Array.from(inputs).map(input => input.value)
+}
 
 document.getElementById('add-certification')
     .addEventListener('click', (e) => {
