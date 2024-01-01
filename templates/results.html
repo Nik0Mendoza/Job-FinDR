@@ -151,9 +151,9 @@
                                         more than one value for it. Every item in the list is stripped (on both
                                         ends) of whitespaces and punctuation, and then is compared to each
                                         certain baseline statement under the job field (category: e.g, services,
-                                        healthcare, engineering, etc.). These baseline statements are synthesized
-                                        experience statements of professionals and experts in the job field their
-                                        resume fits into.
+                                        healthcare, engineering, etc.). These baseline statements are
+                                        <span class="fw-bold">synthesized experience statements</span> of professionals
+                                        and experts in the job field their resume fits into, generated through ChatGPT.
                                     </p>
                                     <p>
                                         So essentially, this feature determines <span class="fst-italic">how
@@ -165,16 +165,18 @@
                                         <span class="fw-bold">ELMo</span>, a language embedding model that
                                         expresses words in vectors that is supposed to vary according to the words
                                         surrounding it in the sentence. The vectors of the item in the feature and
-                                        the single baseline statement is then compared using the
-                                        <span class="fw-bold">cosine similarity</span> strategy. Therefore, a value
+                                        the single baseline statement are further compressed via the
+                                        <span class="fst-italic">mean</span> function to express the vector of the
+                                        statements as a whole, and compared to each other using the
+                                        <span class="fw-bold">cosine similarity</span> strategy; a value
                                         closer to -1 means less similarity in meaning and definition, and a value
                                         closer to 1 means more similarity.
                                     </p>
                                     <p>
                                         Finally, the way to determine this feature's numeric value is by determining
                                         which is the calculated <span class="fw-bold">maximum</span> value in all of
-                                        the items in the feature. The logic for this is that an applicant could have
-                                        wide ranges of experiences; simply taking the mean of all of their experiences
+                                        the items in the feature. The logic for this is that an applicant could have a
+                                        wide range of experiences; simply taking the mean of all of their experiences
                                         could drastically make their professionalism/expertise seem lower, which is
                                         why we have resorted to getting the maximum instead.
                                     </p>
@@ -186,7 +188,61 @@
                                     </p>
                                     <ul>
                                         {% for statement in experience_baselines[after_features["job_field"]] %}
-                                            <li class="fst-italic">{{ statement }}</li>
+                                        <li class="fst-italic">{{ statement }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h5 class="fst-italic">Experience Role</h5>
+                            <div class="ms-3">
+                                <div class="d-flex mt-3 justify-content-around">
+                                    <div class="d-flex flex-column align-items-start">
+                                        <span class="fw-semibold">Before</span>
+                                        {% for role in before_features['experience_role'] %}
+                                        <span>{{ role }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="d-flex flex-column align-items-start">
+                                        <span class="fw-semibold">After</span>
+                                        <span>{{ "{:.5f}".format(after_features['experience']) }}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column mt-3 gap-1">
+                                    <p>
+                                        This feature is wrapped in square brackets considering that there could be
+                                        more than one value for it. Every item in the list is compared to a generic
+                                        string baseline that determines <span class="fst-italic">how
+                                            professional/expert-sounding the applicant's previous roles are.</span>
+                                    </p>
+                                    <p>
+                                        The comparison is undergone between each item in the feature and each generic
+                                        string baseline. This process uses <span class="fw-bold">ELMo</span> once more.
+                                        The vectors of each words of the item in the feature and the generic string
+                                        baseline are compressed via a <span class="fst-italic">mean</span> function
+                                        to express the statement in vectors as a whole, and only then compared to each
+                                        other using the <span class="fw-bold">cosine similarity</span> strategy; a value
+                                        closer to -1 means less similarity in meaning and definition, and a value closer
+                                        to 1 means more similarity.
+                                    </p>
+                                    <p>
+                                        Finally, the way to determine this feature's numeric value is by determining
+                                        which is the calculated <span class="fw-bold">maximum</span> value in all of
+                                        the items in the feature. The logic for this is that an applicant could have a
+                                        wide range of previous roles; simply taking the mean of all of their experiences
+                                        could drastically make their professionalism/expertise seem lower, which is
+                                        why we have resorted to getting the maximum instead.
+                                    </p>
+                                </div>
+                                <div class="mt-3">
+                                    <p>
+                                        These are generic string baselines for experience role.
+                                    </p>
+                                    <ul>
+                                        {% for role in role_baselines %}
+                                            <li class="fst-italic">{{ role }}</li>
                                         {% endfor %}
                                     </ul>
                                 </div>
