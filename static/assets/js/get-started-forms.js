@@ -298,8 +298,13 @@ document.getElementById('submit')
         })
 
         if (response.status == 200 || response.status == 201) {
+            const json = await response.json()
+
+            const commonPrediction = json.body['common_prediction']
+            const addedPrediction = json.body['added_prediction']
+
             // Navigate to results page
-            window.location.href = './results'
+            window.location.href = `./results?common-prediction=${commonPrediction}&added-prediction=${addedPrediction}`
         } else {
             alert('There was an error on our end. Please try again later.')
         }

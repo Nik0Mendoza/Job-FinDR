@@ -61,6 +61,142 @@
                 <button id="upload-new-btn">
                     Try Another
                 </button>
+
+
+                <div class="mt-5">
+
+                    <h4> Preprocessing Breakdown </h4>
+
+                    <div class="d-flex flex-column mt-4 gap-4">
+                        <div>
+                            <h5 class="fst-italic">Age</h5>
+                            <div class="ms-3">
+                                <div class="d-flex mt-3 justify-content-around">
+                                    <div class="d-flex flex-column align-items-start">
+                                        <span class="fw-semibold">Before</span>
+                                        {% for age in before_features['age'] %}
+                                        <span>{{ age }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="d-flex flex-column align-items-start">
+                                        <span class="fw-semibold">After</span>
+                                        <span>{{ after_features['age'] }}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column mt-3 gap-1">
+                                    <p>
+                                        The value acquired from the forms is pre-wrapped by square brackets, since the
+                                        custom preprocessing package expects that multiple values could have been parsed
+                                        by an OCR. Whatever is successfully parsed first in the list is what goes
+                                        through the preprocessing stage.
+                                    </p>
+                                    <p>
+                                        The item from the list goes through a while loop that is run as long as the item
+                                        is still in string form. The item is first checked if it is an empty string,
+                                        which then instructs the interpreter to return -1, the error value. After that,
+                                        the item is parsed; if parsing fails, string stripping/cleaning is done to the
+                                        value and then the process repeats.
+                                    </p>
+                                    <p>
+                                        If there is nothing in the list or the list is empty, the value is expected to
+                                        be <span class="fw-bold">None</span>.
+                                    </p>
+                                    <p>
+                                        If an item in the list of ages found to be preprocessed is found to be a valid
+                                        value, this is automatically included in the final list of preprocessed values.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h5 class="fst-italic">Sex</h5>
+                            <div class="ms-3">
+                                <div class="d-flex mt-3 justify-content-around">
+                                    <div class="d-flex flex-column align-items-start">
+                                        <span class="fw-semibold">Before</span>
+                                        <span>{{ before_features['sex'] }}</span>
+                                    </div>
+                                    <div class="d-flex flex-column align-items-start">
+                                        <span class="fw-semibold">After</span>
+                                        <span>{{ after_features['sex'] }}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column mt-3 gap-1">
+                                    <p>
+                                        This value is taken as is from the forms.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h5 class="fst-italic">Experience</h5>
+                            <div class="ms-3">
+                                <div class="d-flex mt-3 justify-content-around">
+                                    <div class="d-flex flex-column align-items-start">
+                                        <span class="fw-semibold">Before</span>
+                                        {% for experience in before_features['experience'] %}
+                                        <span>{{ experience }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="d-flex flex-column align-items-start">
+                                        <span class="fw-semibold">After</span>
+                                        <span>{{ "{:.5f}".format(after_features['experience']) }}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column mt-3 gap-1">
+                                    <p>
+                                        This feature is wrapped in square brackets considering that there could be
+                                        more than one value for it. Every item in the list is stripped (on both
+                                        ends) of whitespaces and punctuation, and then is compared to each
+                                        certain baseline statement under the job field (category: e.g, services,
+                                        healthcare, engineering, etc.). These baseline statements are synthesized
+                                        experience statements of professionals and experts in the job field their
+                                        resume fits into.
+                                    </p>
+                                    <p>
+                                        So essentially, this feature determines <span class="fst-italic">how
+                                            professional/expert-sounding the applicant's experiences are.</span>
+                                    </p>
+                                    <p>
+                                        The comparison is undergone between each item in the feature and each item
+                                        in the baseline statements under the certain job field. This process uses
+                                        <span class="fw-bold">ELMo</span>, a language embedding model that
+                                        expresses words in vectors that is supposed to vary according to the words
+                                        surrounding it in the sentence. The vectors of the item in the feature and
+                                        the single baseline statement is then compared using the
+                                        <span class="fw-bold">cosine similarity</span> strategy. Therefore, a value
+                                        closer to -1 means less similarity in meaning and definition, and a value
+                                        closer to 1 means more similarity.
+                                    </p>
+                                    <p>
+                                        Finally, the way to determine this feature's numeric value is by determining
+                                        which is the calculated <span class="fw-bold">maximum</span> value in all of
+                                        the items in the feature. The logic for this is that an applicant could have
+                                        wide ranges of experiences; simply taking the mean of all of their experiences
+                                        could drastically make their professionalism/expertise seem lower, which is
+                                        why we have resorted to getting the maximum instead.
+                                    </p>
+                                </div>
+                                <div class="mt-3">
+                                    <p>
+                                        These are the baseline statements from the "{{ after_features['job_field'] }}"
+                                        field.
+                                    </p>
+                                    <ul>
+                                        {% for statement in experience_baselines[after_features["job_field"]] %}
+                                            <li class="fst-italic">{{ statement }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
             </div>
             <div id="posts-container" class="d-flex flex-column flex-shrink-0 w-50">
                 <div id="progress-spinner" class="d-flex flex-column align-items-center mt-5 gap-3">
