@@ -207,7 +207,7 @@
                                     </div>
                                     <div class="d-flex flex-column align-items-start">
                                         <span class="fw-semibold">After</span>
-                                        <span>{{ "{:.5f}".format(after_features['experience']) }}</span>
+                                        <span>{{ "{:.5f}".format(after_features['experience_role']) }}</span>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column mt-3 gap-1">
@@ -242,9 +242,41 @@
                                     </p>
                                     <ul>
                                         {% for role in role_baselines %}
-                                            <li class="fst-italic">{{ role }}</li>
+                                        <li class="fst-italic">{{ role }}</li>
                                         {% endfor %}
                                     </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h5 class="fst-italic">Years of Experience</h5>
+                            <div class="ms-3">
+                                <div class="d-flex mt-3 justify-content-around">
+                                    <div class="d-flex flex-column align-items-start">
+                                        <span class="fw-semibold">Before</span>
+                                        {% for years in before_features['experience_years'] %}
+                                        <span>{{ years }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="d-flex flex-column align-items-start">
+                                        <span class="fw-semibold">After</span>
+                                        <span>{{ after_features['experience_years'] }}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column mt-3 gap-1">
+                                    <p>
+                                        This feature is wrapped in square brackets considering that there could be
+                                        more than one value for it. Considering as well that the preprocessing step was
+                                        developed with OCR in mind, certain steps were added to parse the applicant's
+                                        years of experience more accurately such as determining
+                                        <span class="fst-italic">
+                                            if the string found is already in the intended/correct
+                                            format, or if it is found to be in a cumbersome format such as numeric with
+                                            string, or if it is in the combination of the two.
+                                        </span> These steps could be overkill for the current direction of the tool,
+                                        considering how resume parsing and configuration has been implemented.
+                                    </p>
                                 </div>
                             </div>
                         </div>
