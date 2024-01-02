@@ -200,22 +200,43 @@ function configureInput(disabled) {
 
 function addTextInput(containerId, placeholder) {
     const container = document.getElementById(containerId)
+
+    const inputDiv = document.createElement('div')
+    const icon = document.createElement('i')
+
     const input = document.createElement('input')
     input.type = 'text'
     input.placeholder = placeholder
-    container.append(input)
+
+    inputDiv.append(input)
+    inputDiv.append(icon)
+    container.append(inputDiv)
+
+    inputDiv.classList.add('position-relative')
+    icon.classList.add('close-icon', 'bi', 'bi-x-circle')
+
     return input
 }
 
 function addExperience() {
     const container = document.getElementById('experience-container')
+
+    const inputDiv = document.createElement('div')
+    const icon = document.createElement('i')
+
     const input = document.createElement('input')
     const textarea = document.createElement('textarea')
     input.type = 'text'
     input.placeholder = 'Enter previous role'
     textarea.placeholder = 'Describe your past experience'
-    container.append(input)
-    container.append(textarea)
+
+    inputDiv.append(input)
+    inputDiv.append(textarea)
+    inputDiv.append(icon)
+    container.append(inputDiv)
+
+    inputDiv.classList.add('position-relative')
+    icon.classList.add('close-icon', 'bi', 'bi-x-circle')
 
     return {
         input: input,
@@ -227,6 +248,15 @@ function getAllInputs(containerId, isArea = false) {
     const inputs = document.querySelectorAll('#' + containerId + (isArea ? ' textarea' : ' input'))
     return Array.from(inputs).map(input => input.value)
 }
+
+// Event listener for all clicks (used for finding close icons and their respective div containers)
+document.addEventListener("click", function (event) {
+    // If the clicked element has the class "close-icon"
+    if (event.target.classList.contains("close-icon")) {
+      var parentDiv = event.target.closest("div"); // Find the closest parent div
+      parentDiv.parentNode.removeChild(parentDiv); // Remove the parent div from its container
+    }
+  });
 
 document.getElementById('add-certification')
     .addEventListener('click', (e) => {
