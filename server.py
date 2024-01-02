@@ -84,6 +84,7 @@ def result():
         before_features=before,
         after_features=after,
         role_baselines=role_baselines,
+        degree_labels=pre.degree_labels.DEGREE_LABELS,
         experience_baselines={
             fields[i]: exp_baselines[fields[i]] for i in range(len(fields))
         },

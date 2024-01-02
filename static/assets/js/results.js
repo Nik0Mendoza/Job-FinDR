@@ -96,4 +96,17 @@ document.getElementById('upload-new-btn')
         window.location.href = './get-started-forms.html'
     })
 
+// See breakdown button behavior
+document.getElementById('breakdown-btn')
+    .addEventListener('click', () => {
+        const overlay = document.getElementById('overlay')
+        overlay.classList.toggle('hide')
+    })
+
+document.querySelector('.preprocessing-dialog i')
+    .addEventListener('click', () => {
+        const overlay = document.getElementById('overlay')
+        overlay.classList.toggle('hide')
+    })
+
 document.addEventListener('scroll', checkPostsScroll)
