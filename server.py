@@ -41,34 +41,7 @@ def result():
     if 'common-prediction' not in args.keys() and 'added-prediction' not in args.keys():
         return render_template("error.html")
 
-    before = {
-        "age": ["28"],
-        "sex": "m",
-        "experience": ["Was able to finish a large-scale project.", "Was able to finish a small project."],
-        "experience_role": ["Lead Developer"],
-        "experience_years": ["5"],
-        "hard_skills": ["Java"],
-        "soft_skills": ["Communication"],
-        "certifications": ["Oracle Certified Professional"],
-        "training": ["Agile Development"],
-        "degree": ["computer science"],
-        "job_field": ["Technology"]
-    }
-
-    from_csv = {
-        'age':{0: 28},
-        'sex': {0: "m"},
-        'experience': {0: 0.1774159967899322},
-        'experience_role': {0: 0.3512771129608154},
-        'experience_years': {0: 5},
-        'hard_skills': {0: 0.2017094194889068},
-        'soft_skills': {0: 0.5888161659240723},
-        'certifications': {0: str(True).upper()},
-        'degree': {0: 'computer science'},
-        'training': {0: str(True).upper()},
-        'job_field': {0: 'accounting & finance'}
-    }
-
+    from_csv = pd.read_csv('preprocessed_result/result.csv')
     after = { k: from_csv[k][0] for k in from_csv.keys() }
 
     fields = pre.baselines.JOB_FIELDS
@@ -81,7 +54,7 @@ def result():
         "results.html",
         common=args['common-prediction'],
         added=args['added-prediction'],
-        before_features=before,
+        before_features=features,
         after_features=after,
         role_baselines=role_baselines,
         degree_labels=pre.degree_labels.DEGREE_LABELS,
@@ -150,7 +123,7 @@ def submit():
     features["experience_years"] = request.json['experience_years']
     features["experience"] = request.json['experience_description']
     
-    # pre.prepare_features(features)
+    pre.prepare_features(features)
 
     # print(features)
     # prediction = subprocess.check_output(["python", "trained_c50.py"]).decode('utf-8')
