@@ -42,7 +42,9 @@ def result():
         return render_template("error.html")
 
     from_csv = pd.read_csv('preprocessed_result/result.csv')
-    after = { k: from_csv[k][0] for k in from_csv.keys() }
+    after = { k: (from_csv[k][0] if (not pd.isna(from_csv[k][0]) and from_csv[k][0] != None) else None) for k in from_csv.keys() }
+    after["certifications"] = str(after["certifications"]).upper()
+    after["training"] = str(after["training"]).upper()
 
     fields = pre.baselines.JOB_FIELDS
     exp_baselines = pre.baselines.EXPERIENCE_BASELINES
@@ -58,6 +60,7 @@ def result():
         after_features=after,
         role_baselines=role_baselines,
         degree_labels=pre.degree_labels.DEGREE_LABELS,
+        fields=fields,
         experience_baselines={
             fields[i]: exp_baselines[fields[i]] for i in range(len(fields))
         },
@@ -122,8 +125,10 @@ def submit():
     features["experience_role"] = request.json['experience_role']
     features["experience_years"] = request.json['experience_years']
     features["experience"] = request.json['experience_description']
+    features["job_field"] = request.json['job_field']
     
-    pre.prepare_features(features)
+    print(features)
+    pre.prepare_features(features=features, field=features["job_field"])
 
     # print(features)
     # prediction = subprocess.check_output(["python", "trained_c50.py"]).decode('utf-8')

@@ -286,6 +286,7 @@ document.getElementById('submit')
             experience_years: [document.querySelector('input[name="experience-years"]').value],
             experience_role: getAllInputs('experience-container'),
             experience_description: getAllInputs('experience-container', true),
+            job_field: document.querySelector('input[name="job-field"]').value,
         }
 
         overlay.classList.remove('hide-overlay')
