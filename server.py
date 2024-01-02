@@ -127,7 +127,6 @@ def submit():
     features["experience"] = request.json['experience_description']
     features["job_field"] = request.json['job_field']
     
-    print(features)
     pre.prepare_features(features=features, field=features["job_field"])
 
     # print(features)
