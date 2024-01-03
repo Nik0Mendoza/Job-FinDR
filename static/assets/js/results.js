@@ -56,22 +56,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     commonViewLabel.classList.toggle('hide')
     addedViewLabel.classList.toggle('hide')
 
-    const response = await fetch('./job-posts')
+    // const response = await fetch('./job-posts')
 
-    if (response.status == 200 || response.status == 201) {
-        const postsData = await response.json()
-        commonData = postsData.common
-        addedData = postsData.added
+    // if (response.status == 200 || response.status == 201) {
+    //     const postsData = await response.json()
+    //     commonData = postsData.common
+    //     addedData = postsData.added
 
-        // Remove progress indicator
-        document.getElementById('progress-spinner').remove()
+    //     // Remove progress indicator
+    //     document.getElementById('progress-spinner').remove()
 
-        removePosts()
-        fillPosts(addedData)
-        checkPostsScroll()
+    //     removePosts()
+    //     fillPosts(addedData)
+    //     checkPostsScroll()
 
-        commonViewLabel.classList.toggle('hide')
-    }
+    //     commonViewLabel.classList.toggle('hide')
+    // }
 })
 
 commonViewLabel.addEventListener('click', () => {
@@ -94,6 +94,19 @@ addedViewLabel.addEventListener('click', () => {
 document.getElementById('upload-new-btn')
     .addEventListener('click', () => {
         window.location.href = './get-started-forms.html'
+    })
+
+// See breakdown button behavior
+document.getElementById('breakdown-btn')
+    .addEventListener('click', () => {
+        const overlay = document.getElementById('overlay')
+        overlay.classList.toggle('hide')
+    })
+
+document.querySelector('.preprocessing-dialog i')
+    .addEventListener('click', () => {
+        const overlay = document.getElementById('overlay')
+        overlay.classList.toggle('hide')
     })
 
 document.addEventListener('scroll', checkPostsScroll)

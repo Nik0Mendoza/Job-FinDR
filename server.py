@@ -17,10 +17,6 @@ app = Flask(__name__)
 # Store features so that it could be used site-wide
 features = {}
 
-# Store prediction in a variable so it could be used site-wide
-common_prediction = ""
-added_prediction = ""
-
 # Check if R_HOME is set, if not, set it
 if not os.environ.get('R_HOME'):
     os.environ['R_HOME'] = 'C:\\Program Files\\R\\R-4.3.0'  # Adjust this to your R installation path
@@ -40,7 +36,41 @@ def get_started_forms():
 
 @app.route("/results")
 def result():
-    return render_template("results.html", common=common_prediction, added=added_prediction)
+    args = request.args
+
+    if 'common-prediction' not in args.keys() and 'added-prediction' not in args.keys():
+        return render_template("error.html")
+
+    from_csv = pd.read_csv('preprocessed_result/result.csv')
+    after = { k: (from_csv[k][0] if (not pd.isna(from_csv[k][0]) and from_csv[k][0] != None) else None) for k in from_csv.keys() }
+    after["certifications"] = str(after["certifications"]).upper()
+    after["training"] = str(after["training"]).upper()
+
+    fields = pre.baselines.JOB_FIELDS
+    exp_baselines = pre.baselines.EXPERIENCE_BASELINES
+    h_skills_baselines = pre.baselines.HARD_SKILLS_BASELINES
+    s_skills_baselines = pre.baselines.SOFT_SKILLS_BASELINES
+    role_baselines = pre.baselines.ROLE_BASELINES
+
+    return render_template(
+        "results.html",
+        common=args['common-prediction'],
+        added=args['added-prediction'],
+        before_features=features,
+        after_features=after,
+        role_baselines=role_baselines,
+        degree_labels=pre.degree_labels.DEGREE_LABELS,
+        fields=fields,
+        experience_baselines={
+            fields[i]: exp_baselines[fields[i]] for i in range(len(fields))
+        },
+        hard_skills_baselines={
+            fields[i]: h_skills_baselines[fields[i]] for i in range(len(fields))
+        },
+        soft_skills_baselines={
+            fields[i]: s_skills_baselines[fields[i]] for i in range(len(fields))
+        }
+    )
 
 @app.route("/job-posts")
 def get_job_posts():
@@ -56,8 +86,18 @@ def get_job_posts():
     the predicted job role as the keyword.
     """
 
-    common_posts = api.get_serp_posts(common_prediction) + api.get_adzuna_posts(common_prediction)
-    added_posts = api.get_serp_posts(added_prediction) + api.get_adzuna_posts(added_prediction)
+    args = request.args
+
+    if 'common-prediction' not in args.keys() and 'added-prediction' not in args.keys():
+        return json.dumps({
+            "status": 400,
+            "message": "'common-prediction' and 'added-prediction' arguments not supplied."
+        })
+
+    if 'common-prediction' in args.keys():
+        common_posts = api.get_serp_posts(args['common-prediction']) + api.get_adzuna_posts(args['added-prediction'])
+    if 'added-prediction' in args.keys():
+        added_posts = api.get_serp_posts(args['added-prediction']) + api.get_adzuna_posts(args['added-prediction'])
 
     return json.dumps({
         "status": 200,
@@ -73,7 +113,7 @@ def get_parsed_data():
 
 @app.route("/submit", methods=['POST'])
 def submit():
-    global common_prediction, added_prediction, features, rules, job_field
+    global features
 
     features["age"] = request.json['age']
     features["sex"] = request.json['sex']
@@ -87,12 +127,7 @@ def submit():
     features["experience"] = request.json['experience_description']
     features["job_field"] = request.json['job_field']
     
-    job_field = features["job_field"]
-    job_field_lower = job_field[0].lower()
-
-    print(job_field_lower)
-
-    pre.prepare_features(features, field=job_field_lower)
+    pre.prepare_features(features=features, field=features["job_field"])
 
     print(features)
     
@@ -116,7 +151,11 @@ def submit():
 
     return json.dumps({
         "status": 201,
-        "message": "Submission success!"
+        "message": "Submission success!",
+        "body": {
+            "common_prediction": common_prediction,
+            "added_prediction": added_prediction
+        }
     })
 
     # Placeholder for sending data to R (Replace this with your actual R logic)

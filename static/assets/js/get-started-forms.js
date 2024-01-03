@@ -200,22 +200,43 @@ function configureInput(disabled) {
 
 function addTextInput(containerId, placeholder) {
     const container = document.getElementById(containerId)
+
+    const inputDiv = document.createElement('div')
+    const icon = document.createElement('i')
+
     const input = document.createElement('input')
     input.type = 'text'
     input.placeholder = placeholder
-    container.append(input)
+
+    inputDiv.append(input)
+    inputDiv.append(icon)
+    container.append(inputDiv)
+
+    inputDiv.classList.add('position-relative')
+    icon.classList.add('close-icon', 'bi', 'bi-x-circle')
+
     return input
 }
 
 function addExperience() {
     const container = document.getElementById('experience-container')
+
+    const inputDiv = document.createElement('div')
+    const icon = document.createElement('i')
+
     const input = document.createElement('input')
     const textarea = document.createElement('textarea')
     input.type = 'text'
     input.placeholder = 'Enter previous role'
     textarea.placeholder = 'Describe your past experience'
-    container.append(input)
-    container.append(textarea)
+
+    inputDiv.append(input)
+    inputDiv.append(textarea)
+    inputDiv.append(icon)
+    container.append(inputDiv)
+
+    inputDiv.classList.add('position-relative')
+    icon.classList.add('close-icon', 'bi', 'bi-x-circle')
 
     return {
         input: input,
@@ -227,6 +248,15 @@ function getAllInputs(containerId, isArea = false) {
     const inputs = document.querySelectorAll('#' + containerId + (isArea ? ' textarea' : ' input'))
     return Array.from(inputs).map(input => input.value)
 }
+
+// Event listener for all clicks (used for finding close icons and their respective div containers)
+document.addEventListener("click", function (event) {
+    // If the clicked element has the class "close-icon"
+    if (event.target.classList.contains("close-icon")) {
+      var parentDiv = event.target.closest("div"); // Find the closest parent div
+      parentDiv.parentNode.removeChild(parentDiv); // Remove the parent div from its container
+    }
+  });
 
 document.getElementById('add-certification')
     .addEventListener('click', (e) => {
@@ -270,8 +300,8 @@ document.getElementById('submit')
         // Calculate age
         const today = new Date()
         const birthDate = new Date(birthdate)
-        const age = today.getFullYear() - birthDate.getFullYear()
         const monthDiff = today.getMonth() - birthDate.getMonth()
+        let age = today.getFullYear() - birthDate.getFullYear()
         if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) age--
 
         // Get form data
@@ -286,7 +316,7 @@ document.getElementById('submit')
             experience_years: [document.querySelector('input[name="experience-years"]').value],
             experience_role: getAllInputs('experience-container'),
             experience_description: getAllInputs('experience-container', true),
-            job_field: [document.querySelector('input[name="job-field"]').value]
+            job_field: document.querySelector('select[name="job-field"]').value,
         }
 
         overlay.classList.remove('hide-overlay')
@@ -299,8 +329,13 @@ document.getElementById('submit')
         })
 
         if (response.status == 200 || response.status == 201) {
+            const json = await response.json()
+
+            const commonPrediction = json.body['common_prediction']
+            const addedPrediction = json.body['added_prediction']
+
             // Navigate to results page
-            window.location.href = './results'
+            window.location.href = `./results?common-prediction=${commonPrediction}&added-prediction=${addedPrediction}`
         } else {
             alert('There was an error on our end. Please try again later.')
         }

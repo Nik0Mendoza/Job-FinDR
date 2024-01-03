@@ -173,3 +173,15 @@ form .input-container textarea {
         flex-wrap: wrap;
     }
 }
+
+.close-icon {
+    position: absolute;
+    top: -0.32rem;
+    right: -0.6rem;
+    font-size: 1.5rem;
+    border-radius: 100%;
+    line-height: 1;
+    background-color: white;
+    color: rgb(156, 156, 156);
+    cursor: pointer;
+}
