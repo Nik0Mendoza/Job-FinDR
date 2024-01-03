@@ -18,10 +18,15 @@ ADZUNA_API_URL = "http://api.adzuna.com/v1/api/jobs/gb/search/1"
 PARSER_API_KEY = os.getenv("PARSER_API_KEY")
 PARSER_API_URL = "https://api.superparser.com/parse"
 
+print(SERP_API_KEY)
+print(ADZUNA_APP_ID)
+print(PARSER_API_KEY)
+
 def get_parsed_data(file):
     headers = {
-        "x-api-key": PARSER_API_KEY,
+        "x-api-key": "I5TysrkkWn2lUX2sNTiRx1qSE5957TXd9qRYfSFj",
     }
+    print(headers)
 
     files = { "file": (file.filename, file.read(), file.mimetype) }
 

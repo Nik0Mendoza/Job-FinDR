@@ -73,7 +73,7 @@ def get_parsed_data():
 
 @app.route("/submit", methods=['POST'])
 def submit():
-    global common_prediction, added_prediction, features
+    global common_prediction, added_prediction, features, rules, job_field
 
     features["age"] = request.json['age']
     features["sex"] = request.json['sex']
@@ -85,19 +85,34 @@ def submit():
     features["experience_role"] = request.json['experience_role']
     features["experience_years"] = request.json['experience_years']
     features["experience"] = request.json['experience_description']
+    features["job_field"] = request.json['job_field']
     
-    # pre.prepare_features(features)
+    job_field = features["job_field"]
+    job_field_lower = job_field[0].lower()
 
-    # print(features)
-    # prediction = subprocess.check_output(["python", "trained_c50.py"]).decode('utf-8')
-    # print("hello")
+    print(job_field_lower)
+
+    pre.prepare_features(features, field=job_field_lower)
+
+    print(features)
+    
+    added_prediction = subprocess.check_output(["python", "additional_trained_c50.py"]).decode('utf-8')
+    common_prediction = subprocess.check_output(["python", "common_trained_c50.py"]).decode('utf-8')
+    rules = subprocess.check_output(["python", "print_rules.py"]).decode('utf-8')
+    print("hello")
+
+    print(rules)
     # print(prediction)
 
-    common_prediction = "Computer Engineer"
-    added_prediction = "Developer"
+    #common_prediction = "Computer Engineer"
+    #added_prediction = "Developer"
 
     while "'" in common_prediction:
         common_prediction = common_prediction.strip(string.punctuation + string.whitespace)
+
+    while "'" in added_prediction:
+        added_prediction = added_prediction.strip(string.punctuation + string.whitespace)
+
 
     return json.dumps({
         "status": 201,
