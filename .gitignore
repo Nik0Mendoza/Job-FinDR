@@ -11,6 +11,7 @@ venv
 !trained_c50.py
 !server.py
 !api.py
+!automate_test.py
 
 embeddings1.txt
 embeddings2.txt
