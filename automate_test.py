@@ -110,10 +110,25 @@ os.mkdir(METRICS_PATH)
 path = os.path.join(METRICS_DIR, METRICS_PATH)
 with open(path, "w", newline='') as csvfile:
     csv_writer = csv.writer(csvfile)
+    
+    total_metrics = [ "TOTAL", 0, 0, 0, 0, 0.0, 0.0, 0.0 ]
+    for metric in metrics_per_fold.values():
+        total_metrics[1] += metric["TP"]
+        total_metrics[2] += metric["TN"]
+        total_metrics[3] += metric["FP"]
+        total_metrics[4] += metric["FN"]
+        total_metrics[5] += metric["Precision"]
+        total_metrics[6] += metric["Recall"]
+        total_metrics[7] += metric["F1-Score"]
+    
+    total_metrics[5] = total_metrics[5] / len(metrics_per_fold)
+    total_metrics[6] = total_metrics[6] / len(metrics_per_fold)
+    total_metrics[7] = total_metrics[7] / len(metrics_per_fold)
 
     to_csv = [
         ["fold", *metrics_per_fold.keys()],
         [ k, *v ] for k, v in metrics_per_fold.items()
+        [ "TOTAL", *total_metrics ]
     ]
 
     csv_writer.writerows(to_csv)
