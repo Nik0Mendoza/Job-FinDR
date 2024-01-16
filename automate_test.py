@@ -127,8 +127,8 @@ with open(path, "w", newline='') as csvfile:
 
     to_csv = [
         ["fold", *metrics_per_fold.keys()],
-        [ k, *v ] for k, v in metrics_per_fold.items()
-        [ "TOTAL", *total_metrics ]
+        ([ k, *v ] for k, v in metrics_per_fold.items()),
+        total_metrics
     ]
 
     csv_writer.writerows(to_csv)
