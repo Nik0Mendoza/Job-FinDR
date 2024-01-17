@@ -15,9 +15,38 @@ METRICS_PATH = "metrics"
 METRICS_DIR = "metrics.csv"
 
 CLASSIFICATIONS = [
-    # put job positions here
+    "accountant"
+    "application developer"
+    "auditor"
+    "bookkeeper"
+    "chef"
+    "clerk"
+    "college professor"
+    "customer service representative"
+    "database administrator"
+    "event planner"
+    "financial advisor"
+    "financial manager"
+    "graphic designer"
+    "hotel and restaurant staff"
+    "hr manager"
+    "illustrator"
+    "medical assistant"
+    "medical doctor"
+    "medical laboratory technologist"
+    "office manager"
+    "pharmacist"
+    "project coordinator"
+    "public relations"
+    "recruiter"
+    "registered nurse"
+    "researcher"
+    "software engineer"
+    "sped teacher"
+    "system analyst"
+    "tutor"
+    "web developer"
 ]
-
 
 #### START OF PROCESS ####
 start = time.perf_counter()
@@ -75,8 +104,7 @@ for resume_data in df_dict:
             fn += sum([ confusion_matrix[index][i] for i in range(len(confusion_matrix)) if i != index ])
             fp += sum([ confusion_matrix[i][index] for i in range(len(confusion_matrix)) if i != index ])
             tn += sum(
-                [ sum([ confusion_matrix[i][j] for j in range(len(confusion_matrix)) if j != index ]) ]
-                for i in range(len(confusion_matrix)) if i != index
+                [ sum([ df[i][j] for j in range(len(df)) if j != index ]) for i in range(len(df)) if i != index ]
             )
 
         # calculate metrics

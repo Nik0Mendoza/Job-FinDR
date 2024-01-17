@@ -21,3 +21,6 @@ elmo/
 preprocessed_result
 preprocessed_result/result.csv
 data/
+
+matrix*
+metrics.ipynb
