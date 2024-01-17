@@ -79,22 +79,22 @@ for resume_data in df_dict:
                 for i in range(len(confusion_matrix)) if i != index
             )
 
-            # calculate metrics
-            precision = tp / (tp + fp)
-            recall = tp / (tp + fn)
-            f1_score = 2 * (precision * recall / (precision + recall))
+        # calculate metrics
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        f1_score = 2 * (precision * recall / (precision + recall))
 
-            # prepare fold update
-            fold = count // 40 if count != len(df_dict) - 1 else count // 40 + 1
-            metrics_per_fold[fold] = {
-                "TP": tp,
-                "TN": tn,
-                "FP": fp,
-                "FN": fn,
-                "Precision": precision,
-                "Recall": recall,
-                "F1-Score": f1_score
-            }
+        # prepare fold update
+        fold = count // 40 if count != len(df_dict) - 1 else count // 40 + 1
+        metrics_per_fold[fold] = {
+            "TP": tp,
+            "TN": tn,
+            "FP": fp,
+            "FN": fn,
+            "Precision": precision,
+            "Recall": recall,
+            "F1-Score": f1_score
+        }
         
         # reset confusion matrix for each fold
         for i in range(len(confusion_matrix)):
