@@ -15,9 +15,38 @@ METRICS_PATH = "metrics"
 METRICS_DIR = "metrics.csv"
 
 CLASSIFICATIONS = [
-    # put job positions here
+    "accountant"
+    "application developer"
+    "auditor"
+    "bookkeeper"
+    "chef"
+    "clerk"
+    "college professor"
+    "customer service representative"
+    "database administrator"
+    "event planner"
+    "financial advisor"
+    "financial manager"
+    "graphic designer"
+    "hotel and restaurant staff"
+    "hr manager"
+    "illustrator"
+    "medical assistant"
+    "medical doctor"
+    "medical laboratory technologist"
+    "office manager"
+    "pharmacist"
+    "project coordinator"
+    "public relations"
+    "recruiter"
+    "registered nurse"
+    "researcher"
+    "software engineer"
+    "sped teacher"
+    "system analyst"
+    "tutor"
+    "web developer"
 ]
-
 
 #### START OF PROCESS ####
 start = time.perf_counter()
@@ -75,26 +104,25 @@ for resume_data in df_dict:
             fn += sum([ confusion_matrix[index][i] for i in range(len(confusion_matrix)) if i != index ])
             fp += sum([ confusion_matrix[i][index] for i in range(len(confusion_matrix)) if i != index ])
             tn += sum(
-                [ sum([ confusion_matrix[i][j] for j in range(len(confusion_matrix)) if j != index ]) ]
-                for i in range(len(confusion_matrix)) if i != index
+                [ sum([ df[i][j] for j in range(len(df)) if j != index ]) for i in range(len(df)) if i != index ]
             )
 
-            # calculate metrics
-            precision = tp / (tp + fp)
-            recall = tp / (tp + fn)
-            f1_score = 2 * (precision * recall / (precision + recall))
+        # calculate metrics
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        f1_score = 2 * (precision * recall / (precision + recall))
 
-            # prepare fold update
-            fold = count // 40 if count != len(df_dict) - 1 else count // 40 + 1
-            metrics_per_fold[fold] = {
-                "TP": tp,
-                "TN": tn,
-                "FP": fp,
-                "FN": fn,
-                "Precision": precision,
-                "Recall": recall,
-                "F1-Score": f1_score
-            }
+        # prepare fold update
+        fold = count // 40 if count != len(df_dict) - 1 else count // 40 + 1
+        metrics_per_fold[fold] = {
+            "TP": tp,
+            "TN": tn,
+            "FP": fp,
+            "FN": fn,
+            "Precision": precision,
+            "Recall": recall,
+            "F1-Score": f1_score
+        }
         
         # reset confusion matrix for each fold
         for i in range(len(confusion_matrix)):
