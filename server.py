@@ -109,7 +109,10 @@ def get_job_posts():
 def get_parsed_data():
     """Tap into Resume Parser API and parse the file through the link passed."""
     uploaded_file = request.files['file']
-    return api.get_parsed_data(uploaded_file)
+    value = api.get_parsed_data(uploaded_file)
+    with open("what.json", "w") as file:
+        file.write(json.dumps(value))
+    return value
 
 @app.route("/submit", methods=['POST'])
 def submit():
@@ -125,7 +128,11 @@ def submit():
     features["experience_role"] = request.json['experience_role']
     features["experience_years"] = request.json['experience_years']
     features["experience"] = request.json['experience_description']
-    features["job_field"] = request.json['job_field']
+
+    if "job_field" in request.json.keys():
+        features["job_field"] = request.json['job_field']
+    else:
+        features["job_field"] = None
     
     pre.prepare_features(features=features, field=features["job_field"])
 
