@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
 from serpapi import GoogleSearch
 
+import base64
+from datetime import datetime
 import json
 import os
 import requests
@@ -15,25 +17,31 @@ ADZUNA_APP_ID = os.getenv("ADZUNA_APP_ID")
 ADZUNA_API_KEY = os.getenv("ADZUNA_API_KEY")
 ADZUNA_API_URL = "http://api.adzuna.com/v1/api/jobs/gb/search/1"
 
+PARSER_ID = os.getenv("PARSER_ID")
 PARSER_API_KEY = os.getenv("PARSER_API_KEY")
-PARSER_API_URL = "https://api.superparser.com/parse"
-
-print(SERP_API_KEY)
-print(ADZUNA_APP_ID)
-print(PARSER_API_KEY)
+PARSER_API_URL = "https://api.us.textkernel.com/tx/v10/parser/resume"
 
 def get_parsed_data(file):
     headers = {
-        "x-api-key": "I5TysrkkWn2lUX2sNTiRx1qSE5957TXd9qRYfSFj",
+        "accept": "application/json",
+        "content-type": "application/json",
+        "tx-accountid": PARSER_ID,
+        "tx-servicekey": PARSER_API_KEY,
     }
     print(headers)
 
-    files = { "file": (file.filename, file.read(), file.mimetype) }
+    payload = {
+        'DocumentAsBase64String': base64.b64encode(file.read()).decode('UTF-8'),
+        'DocumentLastModified': datetime.today().strftime('%Y-%m-%d'),
+        'SkillsSettings': { "Normalize": True },
+        'ProfessionsSettings': { "Normalize": True },
+    }
 
-    response = requests.post(PARSER_API_URL, headers=headers, files=files)
+    response = requests.post(PARSER_API_URL, data=json.dumps(payload), headers=headers)
 
     if response.status_code == 200:
-        return response.json()
+        response_json = json.loads(response.content)
+        return response_json
     else:
         print(response.json())
         return json.dumps({

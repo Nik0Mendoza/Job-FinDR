@@ -2,127 +2,204 @@ var experience_role = []
 var experience_years = []
 var experience_description = []
 
-async function getParsedData(file) {
-    // const delay = ms => new Promise(res => setTimeout(res, ms));
+async function submit(data) {
+    const overlay = document.getElementById('overlay')
 
-    const blob = new Blob([file], { type: file.type })
-    const formData = new FormData()
-    formData.append('file', blob, file.name)
+    overlay.classList.remove('hide-overlay')
+    overlay.classList.add('show-overlay')
 
-    const response = await fetch('./parsed-data', {
+    const response = await fetch('./submit', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
     })
 
     if (response.status == 200 || response.status == 201) {
         const json = await response.json()
-        json.data.status = 200
-        return json.data
-    } else {
-        return response.json()
-    }
 
-    /*
-    // Use this to test autofill, to prevent parser credits from running out
-    return {
-        status: 200,
-        education: [
-            {
-                course: "Something"
-            }
-        ],
-        employer: [
-            {
-                role: "someone",
-                description: "something"
-            },
-            {
-                role: "someone",
-                description: "something"
-            }
-        ],
-        total_experience: {
-            years: 15,
-        },
-        skills: {
-            overall_skills: [
-                "some skill",
-                "some skill"
-            ]
-        }
+        const commonPrediction = json.body['common_prediction']
+        const addedPrediction = json.body['added_prediction']
+
+        // Navigate to results page
+        window.location.href = `./results?common-prediction=${commonPrediction}&added-prediction=${addedPrediction}`
+    } else {
+        alert('There was an error on our end. Please try again later.')
     }
-    */
 }
 
-// Drop behavior
-const dropZone = document.getElementById('drop-zone')
-const dropZoneLabel = document.querySelector('#drop-zone span')
-const dropZoneInput = document.querySelector('#drop-zone input')
-dropZone.addEventListener('drop', async (ev) => {
-    // Prevent default behavior (Prevent file from being opened)
-    ev.preventDefault();
+async function getParsedData(file) {
+    // const delay = ms => new Promise(res => setTimeout(res, ms));
+    try {
+        const blob = new Blob([file], { type: file.type })
+        const formData = new FormData()
+        formData.append('file', blob, file.name)
+    
+        const response = await fetch('./parsed-data', {
+            method: 'POST',
+            body: formData,
+        })
+    
+        if (response.status == 200 || response.status == 201) {
+            const json = await response.json()
+            json.Value.ResumeData.status = 200
+            return json.Value.ResumeData
+        } else {
+            throw undefined
+        }
+    } catch (error) {
+        throw undefined
+    }
+}
 
-    if (ev.dataTransfer.items) {
-        // Use DataTransferItemList interface to access the file(s)
-        const items = [...ev.dataTransfer.items]
+async function handleDrop(ev) {
+    let age = 0
+    let sex = null
+    let yearsOfExperience = null
+    const roles = []
+    const experiences = []
+    const degree = []
+    const certifications = []
+    const trainings = []
+    const hardSkills = []
+    const softSkills = []
 
+
+    if (!ev.dataTransfer.items) return
+
+    // Use DataTransferItemList interface to access the file(s)
+    const items = [...ev.dataTransfer.items]
+    try {
         for (const item of items) {
             // get first file in input and break out
             if (item.kind === 'file') {
                 const file = item.getAsFile()
-
+    
                 dropZoneLabel.innerHTML = 'Loading...'
                 configureInput(true)
-
+    
                 const data = await getParsedData(file)
-
+    
                 dropZoneLabel.innerHTML = 'File uploaded: ' + file.name
                 configureInput(false)
-
+    
                 if (data.status == 200) {
-                    fillData(data)
-                } else {
-                    alert("There was an error parsing the resume inserted. You may have to fill up the fields manually.")
-                }
 
+                    if (data.PersonalAttributes) {
+                        // Age
+                        if (data.PersonalAttributes.DateOfBirth) {
+                            const today = new Date()
+                            const birthDate = new Date(data.PersonalAttributes.DateOfBirth.Date)
+                            const monthDiff = today.getMonth() - birthDate.getMonth()
+                            age = today.getFullYear() - birthDate.getFullYear()
+                            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) age--
+                        }
+
+                        // Sex
+                        if (data.PersonalAttributes.Gender) {
+                            sex = data.PersonalAttributes.Gender
+                        }
+                    }
+
+                    if (data.EmploymentHistory) {
+                        // Years of Experience
+                        const history = data.EmploymentHistory
+                        if (history.ExperienceSummary) {
+                            const months = history.ExperienceSummary.MonthsOfWorkExperience ?? 0
+                            yearsOfExperience = Math.floor(months / 12)
+
+                            experiences.push(history.ExperienceSummary.Description)
+                        }
+
+                        // Past jobs
+                        for (const role of history.Positions) {
+                            if (role.JobTitle) {
+                                roles.push(role.JobTitle.Raw)
+                            }
+                        }
+                        
+                        // Experience descriptions or statements
+                        for (const role of history.Positions) {
+                            if (role.Description) {
+                                experiences.push(role.Description)
+                            }
+                        }
+                    }
+
+                    // Degree (Program)
+                    if (data.Education) {
+                        degree.push(data.Education.HighestDegree.Name.Raw)
+                        for (const education of data.Education.EducationDetails) {
+                            if (education.Degree && education.Degree.Name) {
+                                const parsedDegree = education.Degree.Name.Raw ?? undefined
+                                degree.push(parsedDegree)
+                            }
+                        }
+                    }
+
+                    // Certifications
+                    if (data.Certifications) {
+                        for (const cert of data.Certifications) {
+                            certifications.push(cert.Name)
+                        }
+                    }
+
+                    // Training
+                    if (data.Training) {
+                        if (data.Training.Trainings) {
+                            for (const training of data.Training.Trainings) {
+                                trainings.push(training.Text)
+                            }
+                        }
+                    }
+
+                    // Skills
+                    if (data.Skills) {
+                        if (data.Skills.Normalized) {
+                            for (const skill of data.Skills.Normalized) {
+                                const type = skill.Type.toLowerCase()
+                                if (type === "soft") {
+                                    softSkills.push(skill.Name)
+                                } else {
+                                    hardSkills.push(skill.Name)
+                                }
+                            }
+                        }
+
+                        if (data.Skills.RelatedProfessionClasses) {
+                            experiences.push(data.Skills.RelatedProfessionClasses[0].Name)
+                        }
+                    }
+                    
+                    // Get form data
+                    const formData = {
+                        age: [age.toString()],
+                        sex: sex,
+                        program: degree,
+                        certifications: certifications,
+                        training: trainings,
+                        hard_skills: hardSkills,
+                        soft_skills: softSkills,
+                        experience_years: [yearsOfExperience.toString()],
+                        experience_role: roles,
+                        experience_description: experiences,
+                        // job_field: document.querySelector('select[name="job-field"]').value,
+                    }
+                    
+                    await submit(formData)
+
+                    // fillData(data)
+                } else {
+                    throw undefined
+                }
+    
                 break
             }
-        }
-    }
-
-    dropZone.classList.remove('drop-zone-hover-state')
-})
-
-dropZoneInput.addEventListener('change', async () => {
-    file = dropZoneInput.files[0];
-
-    dropZoneLabel.innerHTML = 'Loading...'
-    configureInput(true)
-
-    const data = await getParsedData(file)
-
-    dropZoneLabel.innerHTML = 'File uploaded: ' + file.name
-    configureInput(false)
-
-    if (data.status == 200) {
-        fillData(data)
-    } else {
+        }    
+    } catch (error) {
+        console.log(error)
         alert("There was an error parsing the resume inserted. You may have to fill up the fields manually.")
     }
-})
-
-dropZone.addEventListener('dragleave', () => {
-    dropZone.classList.remove('drop-zone-hover-state')
-})
-
-dropZone.addEventListener('dragenter', () => {
-    dropZone.classList.add('drop-zone-hover-state')
-})
-
-dropZone.addEventListener('dragover', (ev) => {
-    // Prevent default behavior (Prevent file from being opened)
-    ev.preventDefault()
-})
+}
 
 function fillData(parsedData) {
     if (parsedData.education) {
@@ -249,6 +326,34 @@ function getAllInputs(containerId, isArea = false) {
     return Array.from(inputs).map(input => input.value)
 }
 
+// Drop behavior
+const dropZone = document.getElementById('drop-zone')
+const dropZoneLabel = document.querySelector('#drop-zone span')
+const dropZoneInput = document.querySelector('#drop-zone input')
+dropZone.addEventListener('drop', async (ev) => {
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
+    await handleDrop(ev)
+    dropZone.classList.remove('drop-zone-hover-state')
+})
+
+dropZoneInput.addEventListener('change', async (ev) => {
+    await handleDrop(ev)
+})
+
+dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('drop-zone-hover-state')
+})
+
+dropZone.addEventListener('dragenter', () => {
+    dropZone.classList.add('drop-zone-hover-state')
+})
+
+dropZone.addEventListener('dragover', (ev) => {
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault()
+})
+
 // Event listener for all clicks (used for finding close icons and their respective div containers)
 document.addEventListener("click", function (event) {
     // If the clicked element has the class "close-icon"
@@ -291,52 +396,5 @@ document.getElementById('add-experience')
 document.getElementById('submit')
     .addEventListener('click', async (e) => {
         e.preventDefault()
-
-        const overlay = document.getElementById('overlay')
-
-        // Get birthdate from the form input
-        const birthdate = document.querySelector('input[name="birthdate"]').value
-
-        // Calculate age
-        const today = new Date()
-        const birthDate = new Date(birthdate)
-        const monthDiff = today.getMonth() - birthDate.getMonth()
-        let age = today.getFullYear() - birthDate.getFullYear()
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) age--
-
-        // Get form data
-        const formData = {
-            age: [age.toString()],
-            sex: document.querySelector('select[name="sex"]').value,
-            program: [document.querySelector('input[name="program"]').value],
-            certifications: getAllInputs('certifications-container'),
-            training: getAllInputs('training-container'),
-            hard_skills: getAllInputs('hard-skills-container'),
-            soft_skills: getAllInputs('soft-skills-container'),
-            experience_years: [document.querySelector('input[name="experience-years"]').value],
-            experience_role: getAllInputs('experience-container'),
-            experience_description: getAllInputs('experience-container', true),
-            job_field: document.querySelector('select[name="job-field"]').value,
-        }
-
-        overlay.classList.remove('hide-overlay')
-        overlay.classList.add('show-overlay')
-
-        const response = await fetch('./submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
-        })
-
-        if (response.status == 200 || response.status == 201) {
-            const json = await response.json()
-
-            const commonPrediction = json.body['common_prediction']
-            const addedPrediction = json.body['added_prediction']
-
-            // Navigate to results page
-            window.location.href = `./results?common-prediction=${commonPrediction}&added-prediction=${addedPrediction}`
-        } else {
-            alert('There was an error on our end. Please try again later.')
-        }
+        // await submit()
     })

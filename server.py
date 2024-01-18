@@ -125,7 +125,11 @@ def submit():
     features["experience_role"] = request.json['experience_role']
     features["experience_years"] = request.json['experience_years']
     features["experience"] = request.json['experience_description']
-    features["job_field"] = request.json['job_field']
+
+    if "job_field" in request.json.keys():
+        features["job_field"] = request.json['job_field']
+    else:
+        features["job_field"] = None
     
     pre.prepare_features(features=features, field=features["job_field"])
 
