@@ -109,10 +109,7 @@ def get_job_posts():
 def get_parsed_data():
     """Tap into Resume Parser API and parse the file through the link passed."""
     uploaded_file = request.files['file']
-    value = api.get_parsed_data(uploaded_file)
-    with open("what.json", "w") as file:
-        file.write(json.dumps(value))
-    return value
+    return api.get_parsed_data(uploaded_file)
 
 @app.route("/submit", methods=['POST'])
 def submit():

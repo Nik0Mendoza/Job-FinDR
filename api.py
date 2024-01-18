@@ -34,6 +34,7 @@ def get_parsed_data(file):
         'DocumentAsBase64String': base64.b64encode(file.read()).decode('UTF-8'),
         'DocumentLastModified': datetime.today().strftime('%Y-%m-%d'),
         'SkillsSettings': { "Normalize": True },
+        'ProfessionsSettings': { "Normalize": True },
     }
 
     response = requests.post(PARSER_API_URL, data=json.dumps(payload), headers=headers)
