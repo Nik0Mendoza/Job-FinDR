@@ -133,10 +133,10 @@ def submit():
     
     added_prediction = subprocess.check_output(["python", "additional_trained_c50.py"]).decode('utf-8')
     common_prediction = subprocess.check_output(["python", "common_trained_c50.py"]).decode('utf-8')
-    rules = subprocess.check_output(["python", "print_rules.py"]).decode('utf-8')
+    #rules = subprocess.check_output(["python", "print_rules.py"]).decode('utf-8')
     print("hello")
 
-    print(rules)
+    #print(rules)
     # print(prediction)
 
     #common_prediction = "Computer Engineer"
