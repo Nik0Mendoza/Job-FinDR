@@ -2,6 +2,56 @@ var experience_role = []
 var experience_years = []
 var experience_description = []
 
+async function submit() {
+    const overlay = document.getElementById('overlay')
+
+    // Get birthdate from the form input
+    const birthdate = document.querySelector('input[name="birthdate"]').value
+
+    // Calculate age
+    const today = new Date()
+    const birthDate = new Date(birthdate)
+    const monthDiff = today.getMonth() - birthDate.getMonth()
+    let age = today.getFullYear() - birthDate.getFullYear()
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) age--
+
+    // Get form data
+    const formData = {
+        age: [age.toString()],
+        sex: document.querySelector('select[name="sex"]').value,
+        program: [document.querySelector('input[name="program"]').value],
+        certifications: getAllInputs('certifications-container'),
+        training: getAllInputs('training-container'),
+        hard_skills: getAllInputs('hard-skills-container'),
+        soft_skills: getAllInputs('soft-skills-container'),
+        experience_years: [document.querySelector('input[name="experience-years"]').value],
+        experience_role: getAllInputs('experience-container'),
+        experience_description: getAllInputs('experience-container', true),
+        job_field: document.querySelector('select[name="job-field"]').value,
+    }
+
+    overlay.classList.remove('hide-overlay')
+    overlay.classList.add('show-overlay')
+
+    const response = await fetch('./submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+    })
+
+    if (response.status == 200 || response.status == 201) {
+        const json = await response.json()
+
+        const commonPrediction = json.body['common_prediction']
+        const addedPrediction = json.body['added_prediction']
+
+        // Navigate to results page
+        window.location.href = `./results?common-prediction=${commonPrediction}&added-prediction=${addedPrediction}`
+    } else {
+        alert('There was an error on our end. Please try again later.')
+    }
+}
+
 async function getParsedData(file) {
     // const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -21,95 +71,38 @@ async function getParsedData(file) {
     } else {
         return response.json()
     }
-
-    /*
-    // Use this to test autofill, to prevent parser credits from running out
-    return {
-        status: 200,
-        education: [
-            {
-                course: "Something"
-            }
-        ],
-        employer: [
-            {
-                role: "someone",
-                description: "something"
-            },
-            {
-                role: "someone",
-                description: "something"
-            }
-        ],
-        total_experience: {
-            years: 15,
-        },
-        skills: {
-            overall_skills: [
-                "some skill",
-                "some skill"
-            ]
-        }
-    }
-    */
 }
 
 async function handleDrop(ev) {
-    if (ev.dataTransfer.items) {
-        // Use DataTransferItemList interface to access the file(s)
-        const items = [...ev.dataTransfer.items]
+    if (!ev.dataTransfer.items) return
 
-        for (const item of items) {
-            // get first file in input and break out
-            if (item.kind === 'file') {
-                const file = item.getAsFile()
+    // Use DataTransferItemList interface to access the file(s)
+    const items = [...ev.dataTransfer.items]
 
-                dropZoneLabel.innerHTML = 'Loading...'
-                configureInput(true)
+    for (const item of items) {
+        // get first file in input and break out
+        if (item.kind === 'file') {
+            const file = item.getAsFile()
 
-                const data = await getParsedData(file)
+            dropZoneLabel.innerHTML = 'Loading...'
+            configureInput(true)
 
-                dropZoneLabel.innerHTML = 'File uploaded: ' + file.name
-                configureInput(false)
+            const data = await getParsedData(file)
 
-                if (data.status == 200) {
-                    console.log(data)
-                    // fillData(data)
-                } else {
-                    alert("There was an error parsing the resume inserted. You may have to fill up the fields manually.")
-                }
+            dropZoneLabel.innerHTML = 'File uploaded: ' + file.name
+            configureInput(false)
 
-                break
+            if (data.status == 200) {
+                console.log(data)
+                // fillData(data)
+            } else {
+                alert("There was an error parsing the resume inserted. You may have to fill up the fields manually.")
             }
+
+            break
         }
     }
 }
-
-// Drop behavior
-const dropZone = document.getElementById('drop-zone')
-const dropZoneLabel = document.querySelector('#drop-zone span')
-const dropZoneInput = document.querySelector('#drop-zone input')
-dropZone.addEventListener('drop', async (ev) => {
-    // Prevent default behavior (Prevent file from being opened)
-    ev.preventDefault();
-    await handleDrop(ev)
-    dropZone.classList.remove('drop-zone-hover-state')
-})
-
-dropZoneInput.addEventListener('change', async (ev) => await handleDrop(ev))
-
-dropZone.addEventListener('dragleave', () => {
-    dropZone.classList.remove('drop-zone-hover-state')
-})
-
-dropZone.addEventListener('dragenter', () => {
-    dropZone.classList.add('drop-zone-hover-state')
-})
-
-dropZone.addEventListener('dragover', (ev) => {
-    // Prevent default behavior (Prevent file from being opened)
-    ev.preventDefault()
-})
 
 function fillData(parsedData) {
     if (parsedData.education) {
@@ -236,6 +229,34 @@ function getAllInputs(containerId, isArea = false) {
     return Array.from(inputs).map(input => input.value)
 }
 
+// Drop behavior
+const dropZone = document.getElementById('drop-zone')
+const dropZoneLabel = document.querySelector('#drop-zone span')
+const dropZoneInput = document.querySelector('#drop-zone input')
+dropZone.addEventListener('drop', async (ev) => {
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
+    await handleDrop(ev)
+    dropZone.classList.remove('drop-zone-hover-state')
+})
+
+dropZoneInput.addEventListener('change', async (ev) => {
+    await handleDrop(ev)
+})
+
+dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('drop-zone-hover-state')
+})
+
+dropZone.addEventListener('dragenter', () => {
+    dropZone.classList.add('drop-zone-hover-state')
+})
+
+dropZone.addEventListener('dragover', (ev) => {
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault()
+})
+
 // Event listener for all clicks (used for finding close icons and their respective div containers)
 document.addEventListener("click", function (event) {
     // If the clicked element has the class "close-icon"
@@ -278,52 +299,5 @@ document.getElementById('add-experience')
 document.getElementById('submit')
     .addEventListener('click', async (e) => {
         e.preventDefault()
-
-        const overlay = document.getElementById('overlay')
-
-        // Get birthdate from the form input
-        const birthdate = document.querySelector('input[name="birthdate"]').value
-
-        // Calculate age
-        const today = new Date()
-        const birthDate = new Date(birthdate)
-        const monthDiff = today.getMonth() - birthDate.getMonth()
-        let age = today.getFullYear() - birthDate.getFullYear()
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) age--
-
-        // Get form data
-        const formData = {
-            age: [age.toString()],
-            sex: document.querySelector('select[name="sex"]').value,
-            program: [document.querySelector('input[name="program"]').value],
-            certifications: getAllInputs('certifications-container'),
-            training: getAllInputs('training-container'),
-            hard_skills: getAllInputs('hard-skills-container'),
-            soft_skills: getAllInputs('soft-skills-container'),
-            experience_years: [document.querySelector('input[name="experience-years"]').value],
-            experience_role: getAllInputs('experience-container'),
-            experience_description: getAllInputs('experience-container', true),
-            job_field: document.querySelector('select[name="job-field"]').value,
-        }
-
-        overlay.classList.remove('hide-overlay')
-        overlay.classList.add('show-overlay')
-
-        const response = await fetch('./submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
-        })
-
-        if (response.status == 200 || response.status == 201) {
-            const json = await response.json()
-
-            const commonPrediction = json.body['common_prediction']
-            const addedPrediction = json.body['added_prediction']
-
-            // Navigate to results page
-            window.location.href = `./results?common-prediction=${commonPrediction}&added-prediction=${addedPrediction}`
-        } else {
-            alert('There was an error on our end. Please try again later.')
-        }
+        await submit()
     })
