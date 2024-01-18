@@ -16,8 +16,8 @@ async function getParsedData(file) {
 
     if (response.status == 200 || response.status == 201) {
         const json = await response.json()
-        json.data.status = 200
-        return json.data
+        json.Value.ResumeData.status = 200
+        return json.Value.ResumeData
     } else {
         return response.json()
     }
@@ -54,14 +54,7 @@ async function getParsedData(file) {
     */
 }
 
-// Drop behavior
-const dropZone = document.getElementById('drop-zone')
-const dropZoneLabel = document.querySelector('#drop-zone span')
-const dropZoneInput = document.querySelector('#drop-zone input')
-dropZone.addEventListener('drop', async (ev) => {
-    // Prevent default behavior (Prevent file from being opened)
-    ev.preventDefault();
-
+async function handleDrop(ev) {
     if (ev.dataTransfer.items) {
         // Use DataTransferItemList interface to access the file(s)
         const items = [...ev.dataTransfer.items]
@@ -80,7 +73,8 @@ dropZone.addEventListener('drop', async (ev) => {
                 configureInput(false)
 
                 if (data.status == 200) {
-                    fillData(data)
+                    console.log(data)
+                    // fillData(data)
                 } else {
                     alert("There was an error parsing the resume inserted. You may have to fill up the fields manually.")
                 }
@@ -89,27 +83,20 @@ dropZone.addEventListener('drop', async (ev) => {
             }
         }
     }
+}
 
+// Drop behavior
+const dropZone = document.getElementById('drop-zone')
+const dropZoneLabel = document.querySelector('#drop-zone span')
+const dropZoneInput = document.querySelector('#drop-zone input')
+dropZone.addEventListener('drop', async (ev) => {
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
+    await handleDrop(ev)
     dropZone.classList.remove('drop-zone-hover-state')
 })
 
-dropZoneInput.addEventListener('change', async () => {
-    file = dropZoneInput.files[0];
-
-    dropZoneLabel.innerHTML = 'Loading...'
-    configureInput(true)
-
-    const data = await getParsedData(file)
-
-    dropZoneLabel.innerHTML = 'File uploaded: ' + file.name
-    configureInput(false)
-
-    if (data.status == 200) {
-        fillData(data)
-    } else {
-        alert("There was an error parsing the resume inserted. You may have to fill up the fields manually.")
-    }
-})
+dropZoneInput.addEventListener('change', async (ev) => await handleDrop(ev))
 
 dropZone.addEventListener('dragleave', () => {
     dropZone.classList.remove('drop-zone-hover-state')
