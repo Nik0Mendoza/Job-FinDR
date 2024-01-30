@@ -132,19 +132,17 @@ def submit():
         features["job_field"] = None
     
     pre.prepare_features(features=features, field=features["job_field"])
-
-    print(features)
     
-    added_prediction = subprocess.check_output(["python", "additional_trained_c50.py"]).decode('utf-8')
-    common_prediction = subprocess.check_output(["python", "common_trained_c50.py"]).decode('utf-8')
-    #rules = subprocess.check_output(["python", "print_rules.py"]).decode('utf-8')
+    # added_prediction = subprocess.check_output(["python", "additional_trained_c50.py"]).decode('utf-8')
+    # common_prediction = subprocess.check_output(["python", "common_trained_c50.py"]).decode('utf-8')
+    # rules = subprocess.check_output(["python", "print_rules.py"]).decode('utf-8')
     print("hello")
 
-    #print(rules)
+    # print(rules)
     # print(prediction)
 
-    #common_prediction = "Computer Engineer"
-    #added_prediction = "Developer"
+    common_prediction = "Computer Engineer"
+    added_prediction = "Developer"
 
     while "'" in common_prediction:
         common_prediction = common_prediction.strip(string.punctuation + string.whitespace)

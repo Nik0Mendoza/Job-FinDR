@@ -166,7 +166,7 @@ async function handleDrop(ev) {
                         }
 
                         if (data.Skills.RelatedProfessionClasses) {
-                            experiences.push(data.Skills.RelatedProfessionClasses[0].Name)
+                            degree.push(data.Skills.RelatedProfessionClasses[0].Name)
                         }
                     }
                     
