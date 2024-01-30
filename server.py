@@ -95,7 +95,7 @@ def get_job_posts():
         })
 
     if 'common-prediction' in args.keys():
-        common_posts = api.get_serp_posts(args['common-prediction']) + api.get_adzuna_posts(args['added-prediction'])
+        common_posts = api.get_serp_posts(args['common-prediction']) + api.get_adzuna_posts(args['common-prediction'])
     if 'added-prediction' in args.keys():
         added_posts = api.get_serp_posts(args['added-prediction']) + api.get_adzuna_posts(args['added-prediction'])
 
