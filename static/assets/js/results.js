@@ -7,6 +7,9 @@ const container = document.getElementById('posts-container')
 const commonViewLabel = document.getElementById('common-view-label')
 const addedViewLabel = document.getElementById('added-view-label')
 
+const commonPrediction = document.getElementById('common-prediction')
+const addedPrediction = document.getElementById('added-prediction')
+
 function createJobPost(role, location, company, description) {
     const div = document.createElement('div')
     div.classList.add("job-post")
@@ -56,22 +59,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     commonViewLabel.classList.toggle('hide')
     addedViewLabel.classList.toggle('hide')
 
-    // const response = await fetch('./job-posts')
+    console.log(commonPrediction.innerHTML)
+    console.log(addedPrediction.innerHTML)
+    
+    const response = await fetch(`./job-posts?common-prediction=${commonPrediction.innerHTML}&added-prediction=${addedPrediction.innerHTML}`)
 
-    // if (response.status == 200 || response.status == 201) {
-    //     const postsData = await response.json()
-    //     commonData = postsData.common
-    //     addedData = postsData.added
+    if (response.status == 200 || response.status == 201) {
+        const postsData = await response.json()
+        commonData = postsData.common
+        addedData = postsData.added
 
-    //     // Remove progress indicator
-    //     document.getElementById('progress-spinner').remove()
+        console.log(commonData)
+        console.log(addedData)
 
-    //     removePosts()
-    //     fillPosts(addedData)
-    //     checkPostsScroll()
+        // Remove progress indicator
+        document.getElementById('progress-spinner').remove()
 
-    //     commonViewLabel.classList.toggle('hide')
-    // }
+        removePosts()
+        fillPosts(addedData)
+        checkPostsScroll()
+
+        commonViewLabel.classList.toggle('hide')
+    }
 })
 
 commonViewLabel.addEventListener('click', () => {
