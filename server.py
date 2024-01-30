@@ -95,7 +95,7 @@ def get_job_posts():
         })
 
     if 'common-prediction' in args.keys():
-        common_posts = api.get_serp_posts(args['common-prediction']) + api.get_adzuna_posts(args['added-prediction'])
+        common_posts = api.get_serp_posts(args['common-prediction']) + api.get_adzuna_posts(args['common-prediction'])
     if 'added-prediction' in args.keys():
         added_posts = api.get_serp_posts(args['added-prediction']) + api.get_adzuna_posts(args['added-prediction'])
 
@@ -125,22 +125,24 @@ def submit():
     features["experience_role"] = request.json['experience_role']
     features["experience_years"] = request.json['experience_years']
     features["experience"] = request.json['experience_description']
-    features["job_field"] = request.json['job_field']
+
+    if "job_field" in request.json.keys():
+        features["job_field"] = request.json['job_field']
+    else:
+        features["job_field"] = None
     
     pre.prepare_features(features=features, field=features["job_field"])
-
-    print(features)
     
-    added_prediction = subprocess.check_output(["python", "additional_trained_c50.py"]).decode('utf-8')
-    common_prediction = subprocess.check_output(["python", "common_trained_c50.py"]).decode('utf-8')
-    rules = subprocess.check_output(["python", "print_rules.py"]).decode('utf-8')
+    # added_prediction = subprocess.check_output(["python", "additional_trained_c50.py"]).decode('utf-8')
+    # common_prediction = subprocess.check_output(["python", "common_trained_c50.py"]).decode('utf-8')
+    # rules = subprocess.check_output(["python", "print_rules.py"]).decode('utf-8')
     print("hello")
 
-    print(rules)
+    # print(rules)
     # print(prediction)
 
-    #common_prediction = "Computer Engineer"
-    #added_prediction = "Developer"
+    common_prediction = "Computer Engineer"
+    added_prediction = "Developer"
 
     while "'" in common_prediction:
         common_prediction = common_prediction.strip(string.punctuation + string.whitespace)
