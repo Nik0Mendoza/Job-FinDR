@@ -1,7 +1,7 @@
 library(partykit)
 library(C50)
 
-whole_train_r <- read.csv("./static/assets/train/whole_train_r.csv")
+whole_train_r <- read.csv("./train/whole_train_r.csv")
 
 columns_to_convert <- c("sex", "degree", "job_field", "job_position", "training", "certifications")
 
