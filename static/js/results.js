@@ -10,9 +10,9 @@ const addedViewLabel = document.getElementById('added-view-label')
 const commonPrediction = document.getElementById('common-prediction')
 const addedPrediction = document.getElementById('added-prediction')
 
-function createJobPost(role, location, company, description) {
+function createJobPost (role, location, company, description) {
     const div = document.createElement('div')
-    div.classList.add("job-post")
+    div.classList.add('job-post')
 
     div.innerHTML = `<h2>${role}</h2>` +
         `<div><span>${company}, </span><span class="fst-italic">${location}</span></div>` +
@@ -21,7 +21,7 @@ function createJobPost(role, location, company, description) {
     return div
 }
 
-function checkPostsScroll() {
+function checkPostsScroll () {
     posts.forEach(element => {
         const elementTop = element.getBoundingClientRect().top
         const windowHeight = window.innerHeight
@@ -36,13 +36,13 @@ function checkPostsScroll() {
     })
 }
 
-function removePosts() {
+function removePosts () {
     while (container.firstChild)
         container.removeChild(container.lastChild)
     posts = []
 }
 
-function fillPosts(list) {
+function fillPosts (list) {
     for (let i = 0; i < list.length; i++) {
         const post = createJobPost(
             list[i].title,
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     const response = await fetch(`./job-posts?common-prediction=${commonPrediction.innerHTML}&added-prediction=${addedPrediction.innerHTML}`)
 
-    if (response.status == 200 || response.status == 201) {
+    if (response.status === 200 || response.status === 201) {
         const postsData = await response.json()
         commonData = postsData.common
         addedData = postsData.added
