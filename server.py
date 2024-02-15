@@ -133,8 +133,8 @@ def submit():
     
     pre.prepare_features(features=features, field=features["job_field"])
     
-    # added_prediction = subprocess.check_output(["python", "additional_trained_c50.py"]).decode('utf-8')
-    # common_prediction = subprocess.check_output(["python", "common_trained_c50.py"]).decode('utf-8')
+    # added_prediction = subprocess.check_output(["python", "./r_code/additional_trained_c50.py"]).decode('utf-8')
+    # common_prediction = subprocess.check_output(["python", "./r_code/common_trained_c50.py"]).decode('utf-8')
     # rules = subprocess.check_output(["python", "print_rules.py"]).decode('utf-8')
     print("hello")
 
