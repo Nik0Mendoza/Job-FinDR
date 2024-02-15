@@ -2,7 +2,7 @@ var experience_role = []
 var experience_years = []
 var experience_description = []
 
-async function submit (data) {
+async function submit(data) {
   const overlay = document.getElementById('overlay')
 
   overlay.classList.remove('hide-overlay')
@@ -27,7 +27,7 @@ async function submit (data) {
   }
 }
 
-async function getParsedData (file) {
+async function getParsedData(file) {
   // const delay = ms => new Promise(res => setTimeout(res, ms));
   try {
     const blob = new Blob([file], { type: file.type })
@@ -51,7 +51,7 @@ async function getParsedData (file) {
   }
 }
 
-async function handleDrop (ev) {
+async function handleDrop(ev) {
   let age = 0
   let sex = null
   let yearsOfExperience = null
@@ -63,137 +63,149 @@ async function handleDrop (ev) {
   const hardSkills = []
   const softSkills = []
 
+  let file = null
 
-  if (!ev.dataTransfer.items) return
+  if (ev.dataTransfer) {
+    if (!ev.dataTransfer.items) return
+    if (ev.dataTransfer.items.length > 1) {
+      alert('Job role prediction supports only one document per input.')
+    }
 
-  // Use DataTransferItemList interface to access the file(s)
-  const items = [...ev.dataTransfer.items]
+    item = ev.dataTransfer.items[0]
+    if (item.kind !== 'file') {
+      alert('Item inserted was not a file.')
+    }
+
+    file = item.getAsFile()
+
+  } else {
+    if (!ev.target)
+      if (!ev.target.files) return
+    if (ev.target.files.length > 1) {
+      alert('Job role prediction supports only one document per input.')
+    }
+
+    file = ev.target.files[0]
+  }
+
   try {
-    for (const item of items) {
-      // get first file in input and break out
-      if (item.kind === 'file') {
-        const file = item.getAsFile()
+    // get first file in input and break out
+    dropZoneLabel.innerHTML = 'Loading...'
+    configureInput(true)
 
-        dropZoneLabel.innerHTML = 'Loading...'
-        configureInput(true)
+    const data = await getParsedData(file)
 
-        const data = await getParsedData(file)
+    dropZoneLabel.innerHTML = 'File uploaded: ' + file.name
+    configureInput(false)
 
-        dropZoneLabel.innerHTML = 'File uploaded: ' + file.name
-        configureInput(false)
+    if (data.status === 200) {
 
-        if (data.status === 200) {
-
-          if (data.PersonalAttributes) {
-            // Age
-            if (data.PersonalAttributes.DateOfBirth) {
-              const today = new Date()
-              const birthDate = new Date(data.PersonalAttributes.DateOfBirth.Date)
-              const monthDiff = today.getMonth() - birthDate.getMonth()
-              age = today.getFullYear() - birthDate.getFullYear()
-              if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) age--
-            }
-
-            // Sex
-            if (data.PersonalAttributes.Gender) {
-              sex = data.PersonalAttributes.Gender
-            }
-          }
-
-          if (data.EmploymentHistory) {
-            // Years of Experience
-            const history = data.EmploymentHistory
-            if (history.ExperienceSummary) {
-              const months = history.ExperienceSummary.MonthsOfWorkExperience ?? 0
-              yearsOfExperience = Math.floor(months / 12)
-
-              experiences.push(history.ExperienceSummary.Description)
-            }
-
-            // Past jobs
-            for (const role of history.Positions) {
-              if (role.JobTitle) {
-                roles.push(role.JobTitle.Raw)
-              }
-            }
-
-            // Experience descriptions or statements
-            for (const role of history.Positions) {
-              if (role.Description) {
-                experiences.push(role.Description)
-              }
-            }
-          }
-
-          // Degree (Program)
-          if (data.Education) {
-            degree.push(data.Education.HighestDegree.Name.Raw)
-            for (const education of data.Education.EducationDetails) {
-              if (education.Degree && education.Degree.Name) {
-                const parsedDegree = education.Degree.Name.Raw ?? undefined
-                degree.push(parsedDegree)
-              }
-            }
-          }
-
-          // Certifications
-          if (data.Certifications) {
-            for (const cert of data.Certifications) {
-              certifications.push(cert.Name)
-            }
-          }
-
-          // Training
-          if (data.Training) {
-            if (data.Training.Trainings) {
-              for (const training of data.Training.Trainings) {
-                trainings.push(training.Text)
-              }
-            }
-          }
-
-          // Skills
-          if (data.Skills) {
-            if (data.Skills.Normalized) {
-              for (const skill of data.Skills.Normalized) {
-                const type = skill.Type.toLowerCase()
-                if (type === 'soft') {
-                  softSkills.push(skill.Name)
-                } else {
-                  hardSkills.push(skill.Name)
-                }
-              }
-            }
-
-            if (data.Skills.RelatedProfessionClasses) {
-              degree.push(data.Skills.RelatedProfessionClasses[0].Name)
-            }
-          }
-
-          // Get form data
-          const formData = {
-            age: [age.toString()],
-            sex: sex,
-            program: degree,
-            certifications: certifications,
-            training: trainings,
-            hard_skills: hardSkills,
-            soft_skills: softSkills,
-            experience_years: [yearsOfExperience.toString()],
-            experience_role: roles,
-            experience_description: experiences,
-            // job_field: document.querySelector('select[name='job-field']').value,
-          }
-
-          await submit(formData)
-
-          // fillData(data)
-        } else {
-          throw undefined
+      if (data.PersonalAttributes) {
+        // Age
+        if (data.PersonalAttributes.DateOfBirth) {
+          const today = new Date()
+          const birthDate = new Date(data.PersonalAttributes.DateOfBirth.Date)
+          const monthDiff = today.getMonth() - birthDate.getMonth()
+          age = today.getFullYear() - birthDate.getFullYear()
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) age--
         }
 
-        break
+        // Sex
+        if (data.PersonalAttributes.Gender) {
+          sex = data.PersonalAttributes.Gender
+        }
       }
+
+      if (data.EmploymentHistory) {
+        // Years of Experience
+        const history = data.EmploymentHistory
+        if (history.ExperienceSummary) {
+          const months = history.ExperienceSummary.MonthsOfWorkExperience ?? 0
+          yearsOfExperience = Math.floor(months / 12)
+
+          experiences.push(history.ExperienceSummary.Description)
+        }
+
+        // Past jobs
+        for (const role of history.Positions) {
+          if (role.JobTitle) {
+            roles.push(role.JobTitle.Raw)
+          }
+        }
+
+        // Experience descriptions or statements
+        for (const role of history.Positions) {
+          if (role.Description) {
+            experiences.push(role.Description)
+          }
+        }
+      }
+
+      // Degree (Program)
+      if (data.Education) {
+        degree.push(data.Education.HighestDegree.Name.Raw)
+        for (const education of data.Education.EducationDetails) {
+          if (education.Degree && education.Degree.Name) {
+            const parsedDegree = education.Degree.Name.Raw ?? undefined
+            degree.push(parsedDegree)
+          }
+        }
+      }
+
+      // Certifications
+      if (data.Certifications) {
+        for (const cert of data.Certifications) {
+          certifications.push(cert.Name)
+        }
+      }
+
+      // Training
+      if (data.Training) {
+        if (data.Training.Trainings) {
+          for (const training of data.Training.Trainings) {
+            trainings.push(training.Text)
+          }
+        }
+      }
+
+      // Skills
+      if (data.Skills) {
+        if (data.Skills.Normalized) {
+          for (const skill of data.Skills.Normalized) {
+            const type = skill.Type.toLowerCase()
+            if (type === 'soft') {
+              softSkills.push(skill.Name)
+            } else {
+              hardSkills.push(skill.Name)
+            }
+          }
+        }
+
+        if (data.Skills.RelatedProfessionClasses) {
+          degree.push(data.Skills.RelatedProfessionClasses[0].Name)
+        }
+      }
+
+      // Get form data
+      const formData = {
+        age: [age.toString()],
+        sex: sex,
+        program: degree,
+        certifications: certifications,
+        training: trainings,
+        hard_skills: hardSkills,
+        soft_skills: softSkills,
+        experience_years: [yearsOfExperience.toString()],
+        experience_role: roles,
+        experience_description: experiences,
+        // job_field: document.querySelector('select[name='job-field']').value,
+      }
+
+      await submit(formData)
+
+      // fillData(data)
+    } else {
+      throw undefined
     }
   } catch (error) {
     console.log(error)
@@ -201,7 +213,7 @@ async function handleDrop (ev) {
   }
 }
 
-function fillData (parsedData) {
+function fillData(parsedData) {
   if (parsedData.education) {
     for (const item of parsedData.education) {
       if (item.course) {
@@ -230,12 +242,12 @@ function fillData (parsedData) {
   }
 }
 
-function fillSingle (name, value) {
+function fillSingle(name, value) {
   const input = document.querySelector(`input[name=${name}]`)
   input.value = value
 }
 
-function fillMultiple (containerId, inputPlaceholder, values) {
+function fillMultiple(containerId, inputPlaceholder, values) {
   const inputs = document.querySelectorAll(`#${containerId} input`)
   for (let i = 0; i < values.length; i++) {
     if (i >= inputs.length) {
@@ -247,7 +259,7 @@ function fillMultiple (containerId, inputPlaceholder, values) {
   }
 }
 
-function fillExperience (experiences) {
+function fillExperience(experiences) {
   const inputs = document.querySelectorAll(`#experience-container input`)
   const textareas = document.querySelectorAll(`#experience-container textarea`)
   for (let i = 0; i < experiences.length; i++) {
@@ -262,7 +274,7 @@ function fillExperience (experiences) {
   }
 }
 
-function configureInput (disabled) {
+function configureInput(disabled) {
   const inputs = document.querySelectorAll('input')
   const textareas = document.querySelectorAll('textarea')
   const buttons = document.querySelectorAll('button')
@@ -275,7 +287,7 @@ function configureInput (disabled) {
     button.disabled = disabled
 }
 
-function addTextInput (containerId, placeholder) {
+function addTextInput(containerId, placeholder) {
   const container = document.getElementById(containerId)
 
   const inputDiv = document.createElement('div')
@@ -295,7 +307,7 @@ function addTextInput (containerId, placeholder) {
   return input
 }
 
-function addExperience () {
+function addExperience() {
   const container = document.getElementById('experience-container')
 
   const inputDiv = document.createElement('div')
@@ -321,7 +333,7 @@ function addExperience () {
   }
 }
 
-function getAllInputs (containerId, isArea = false) {
+function getAllInputs(containerId, isArea = false) {
   const inputs = document.querySelectorAll('#' + containerId + (isArea ? ' textarea' : ' input'))
   return Array.from(inputs).map(input => input.value)
 }
@@ -332,12 +344,13 @@ const dropZoneLabel = document.querySelector('#drop-zone span')
 const dropZoneInput = document.querySelector('#drop-zone input')
 dropZone.addEventListener('drop', async (ev) => {
   // Prevent default behavior (Prevent file from being opened)
-  ev.preventDefault();
+  ev.preventDefault()
   await handleDrop(ev)
   dropZone.classList.remove('drop-zone-hover-state')
 })
 
 dropZoneInput.addEventListener('change', async (ev) => {
+  ev.preventDefault()
   await handleDrop(ev)
 })
 
