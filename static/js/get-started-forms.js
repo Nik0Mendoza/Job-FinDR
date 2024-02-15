@@ -143,11 +143,13 @@ async function handleDrop(ev) {
 
       // Degree (Program)
       if (data.Education) {
-        degree.push(data.Education.HighestDegree.Name.Raw)
-        for (const education of data.Education.EducationDetails) {
-          if (education.Degree && education.Degree.Name) {
-            const parsedDegree = education.Degree.Name.Raw ?? undefined
-            degree.push(parsedDegree)
+        if (data.Education.HighestDegree) {
+          degree.push(data.Education.HighestDegree.Name.Raw)
+          for (const education of data.Education.EducationDetails) {
+            if (education.Degree && education.Degree.Name) {
+              const parsedDegree = education.Degree.Name.Raw ?? undefined
+              degree.push(parsedDegree)
+            }
           }
         }
       }
