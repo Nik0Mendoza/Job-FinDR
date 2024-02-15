@@ -100,7 +100,7 @@
 
 #overlay {
   display: flex;
-  position: absolute;
+  position: fixed;
   justify-content: center;
   align-items: center;
   top: 0;
