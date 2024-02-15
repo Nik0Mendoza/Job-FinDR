@@ -13,6 +13,11 @@ venv
 !api.py
 !automate_test.py
 
+time_compute/
+time_compute.ipynb
+
+test/
+
 embeddings1.txt
 embeddings2.txt
 
@@ -26,3 +31,4 @@ performance/
 
 
 /resumes
+test.zip
