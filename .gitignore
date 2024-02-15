@@ -24,11 +24,11 @@ embeddings2.txt
 elmo/
 
 preprocessed_result
-preprocessed_result/result.csv
 data/
 
 performance/
 
 
 resumes/
+static/assets/resumes
 test.zip
