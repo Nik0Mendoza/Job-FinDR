@@ -5,7 +5,7 @@ import rpy2.robjects as robjects
 from rpy2.robjects import pandas2ri
 
 # Load the trained model from R in Python
-common_loaded_model = robjects.r['readRDS']('./train/existing_model.rds')
+common_loaded_model = robjects.r['readRDS']('./r_code/train/existing_model.rds')
 
 # Now 'loaded_model' contains the model loaded from R, you can use it in Python as needed
 # Further processing or predictions with the loaded model
@@ -22,7 +22,7 @@ robjects.globalenv['common_loaded_model'] = common_loaded_model
 robjects.globalenv['new_data'] = r_new_data  # Renaming for consistency with R script
 
 # Execute the R script containing the prediction function
-robjects.r['source']('./predict_c50.r')
+robjects.r['source']('./r_code/predict_c50.r')
 
 # Make predictions using the loaded model
 common_predictions = robjects.r['custom_predict_function'](common_loaded_model, new_data)
