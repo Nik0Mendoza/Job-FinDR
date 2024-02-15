@@ -5,7 +5,7 @@ import rpy2.robjects as robjects
 from rpy2.robjects import pandas2ri
 
 # Load the trained model from R in Python
-common_loaded_model = robjects.r['readRDS']('./static/assets/train/existing_model.rds')
+common_loaded_model = robjects.r['readRDS']('./train/existing_model.rds')
 
 # Now 'loaded_model' contains the model loaded from R, you can use it in Python as needed
 # Further processing or predictions with the loaded model
