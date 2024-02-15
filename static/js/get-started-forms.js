@@ -127,16 +127,18 @@ async function handleDrop(ev) {
         }
 
         // Past jobs
-        for (const role of history.Positions) {
-          if (role.JobTitle) {
-            roles.push(role.JobTitle.Raw)
+        if (history.Positions) {
+          for (const role of history.Positions) {
+            if (role.JobTitle) {
+              roles.push(role.JobTitle.Raw)
+            }
           }
-        }
-
-        // Experience descriptions or statements
-        for (const role of history.Positions) {
-          if (role.Description) {
-            experiences.push(role.Description)
+  
+          // Experience descriptions or statements
+          for (const role of history.Positions) {
+            if (role.Description) {
+              experiences.push(role.Description)
+            }
           }
         }
       }
